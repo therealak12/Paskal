@@ -25,7 +25,7 @@ GRANT ALL PRIVILEGES ON DATABASE paskal TO paskal_user;
 ## Run The Project
 
 ```bash
-cd project
+cd Paskal
 python3 -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
