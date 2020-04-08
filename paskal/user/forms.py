@@ -1,18 +1,32 @@
-from django.contrib.auth.forms import forms, ReadOnlyPasswordHashField, UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import forms, ReadOnlyPasswordHashField, UserCreationForm as BaseUserCreationForm,\
+    UserChangeForm as BaseUserChangeForm
 from django.contrib.auth import get_user_model, authenticate
 
 from .models import User
 
 
-class UserCreationForm(UserCreationForm):
+class UserCreationForm(BaseUserCreationForm):
     password1 = forms.CharField(
-        label='Password',
+        label='گذرواژه',
         widget=forms.PasswordInput
     )
     password2 = forms.CharField(
-        label='Password confirmation',
+        label='تکرار گذرواژه',
         widget=forms.PasswordInput
     )
+
+    name = forms.CharField(label='نام کامل', widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'dir': 'rtl',
+        }
+    ))
+
+    email = forms.EmailField(label='ایمیل', widget=forms.EmailInput(
+        attrs={
+            'class': 'form-control',
+        }
+    ))
 
     class Meta:
         model = get_user_model()
@@ -34,7 +48,7 @@ class UserCreationForm(UserCreationForm):
         return user
 
 
-class UserChangeForm(UserChangeForm):
+class UserChangeForm(BaseUserChangeForm):
     password = ReadOnlyPasswordHashField()
 
     class Meta:
@@ -43,3 +57,16 @@ class UserChangeForm(UserChangeForm):
 
     def clean_password(self):
         return self.initial["password"]
+
+
+class AuthenticationForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput, label='گذر‌واژه')
+    email = forms.EmailField(label='ایمیل', widget=forms.EmailInput(
+        attrs={
+            'class': 'form-control'
+        }
+    ))
+
+    class Meta:
+        model = get_user_model()
+        fields = ('email', 'password')

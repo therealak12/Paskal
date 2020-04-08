@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'user/custom_form.css' %}>
+<div class="container form_container">
+    <form action="{% url 'user:signin' %}" method="POST" id="rtl_form">
+        {% csrf_token %}
+        <div class="row justify-content-end">
+            <div class="col-6">
+                {{ form.email | as_crispy_field }}
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-6">
+                {{ form.password | as_crispy_field}}
+            </div>
+        </div>
+        <div class="col col-3 justify-content-end">
+            <button class="btn btn-success">ورود</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

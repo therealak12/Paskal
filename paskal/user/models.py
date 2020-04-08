@@ -42,7 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
-    name = models.CharField(max_length=35)
+    name = models.CharField(max_length=35, )
     bio = models.CharField(max_length=160, blank=True)
     avatar = models.ImageField(upload_to=get_avatar_path, blank=True)
     score = models.IntegerField(default=0)
