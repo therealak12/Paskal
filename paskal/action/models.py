@@ -1,0 +1,40 @@
+from django.db import models
+from django.conf import settings
+from django.utils import timezone
+
+
+class Action(models.Model):
+    text = models.TextField()
+    score = models.IntegerField()
+    # When a user is deleted we still keep his/her questions
+    user = models.ForeignKey(settings.AUTH_USER_MODE,
+                             on_delete=models.DO_NOTHING)
+    created_on = models.DateTimeField(default=timezone.now)
+    last_updated_on = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        abstract = True
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Question(Action):
+    title = models.CharField(max_length=500)
+    tags = models.ManyToManyField('Tag')
+
+
+class Answer(Action):
+    question = models.ForeignKey('Question')
+
+
+class Reply(model.Model):
+    text = models.CharField(max_length=1000)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.DO_NOTHING)
+    last_updated_on = models.DateTimeField(default=timezone.now)
+    action = models.ForeignKey('Action')

@@ -18,8 +18,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+app_name = 'main'
+
 urlpatterns = [
     # path('', questions, name='questions'), TODO
     path('admin/', admin.site.urls),
-    path('auth/', include(('user.urls', 'user'), namespace='user'))
+    path('auth/', include(('user.urls', 'user'), namespace='user')),
+    path('action/', include(('action.urls', 'action'), namespace='action'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
