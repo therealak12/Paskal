@@ -1,0 +1,44 @@
+.q_list {
+  float: right;
+}
+
+.q_wrapper {
+  border-bottom: solid 1px rgb(190, 190, 190);
+  height: 100px;
+  width: 900px;
+}
+
+.q_stat {
+  background-color: orange;
+  float: right;
+  border-radius: 5px;
+  width: 80px;
+  height: 65px;
+  padding: 5px;
+  text-align: center;
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.q_description {
+  position: relative;
+  margin-top: 15px;
+  float: right;
+  margin-right: 20px;
+}
+
+.q_title {
+  float: right;
+  text-align: right;
+}
+
+.q_details {
+  direction: rtl;
+  float: right;
+  text-align: right;
+}
+
+.sidebar_text {
+  text-align: right;
+}

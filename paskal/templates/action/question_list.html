@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'action/question.css' %}>
+<div class="container">
+    <div class="col col-8 q_list">
+        {% for question in object_list %}
+        <div class="q_wrapper">
+            <div class="q_stat" dir="rtl">
+                {{ question.score }}امتیاز
+                {{ question.answers | length }}جواب
+            </div>
+            <div class="q_description">
+                <div class="q_title">
+                    <strong>{{ question.title }}</strong>
+                </div>
+                <br>
+                <div class="q_details">
+                    {{ question.text|truncatechars:100 }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col col-4 sidebar_text">
+        <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
+    </div>
+</div>
+{% endblock %}

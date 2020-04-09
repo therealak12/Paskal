@@ -12,20 +12,20 @@ def signup(request):
         password = form.cleaned_data.get('password1')
         user = authenticate(email=email, password=password)
         login(request, user)
-        return redirect('action:questions')
+        return redirect('action:question-list')
     return render(request, 'user/signup.html', {'form': form})
 
 
 def signin(request):
     if request.user.is_authenticated:
-        return redirect('action:questions')
+        return redirect('action:question-list')
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
         user = authenticate(email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('action:questions')
+            return redirect('action:question-list')
         else:
             form = AuthenticationForm(request.POST)
             return render(request, 'user/signin.html', {'form': form})
@@ -36,4 +36,4 @@ def signin(request):
 
 def signout(request):
     logout(request)
-    return redirect('action:questions')
+    return redirect('action:question-list')

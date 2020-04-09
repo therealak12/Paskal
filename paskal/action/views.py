@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.views.generic.list import ListView
+from .models import Question
 
 
-def questions(request):
-    return render(request, 'action/questions.html')
+class QuestionListView(ListView):
+    paginate_by = 30
+    model = Question

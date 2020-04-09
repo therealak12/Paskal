@@ -7,13 +7,17 @@ class Action(models.Model):
     text = models.TextField()
     score = models.IntegerField()
     # When a user is deleted we still keep his/her questions
-    user = models.ForeignKey(settings.AUTH_USER_MODE,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING)
     created_on = models.DateTimeField(default=timezone.now)
     last_updated_on = models.DateTimeField(default=timezone.now)
 
     class Meta:
         abstract = True
+
+
+class TargetAction(Action):
+    pass
 
 
 class Tag(models.Model):
@@ -25,16 +29,16 @@ class Tag(models.Model):
 
 class Question(Action):
     title = models.CharField(max_length=500)
-    tags = models.ManyToManyField('Tag')
+    tags = models.ManyToManyField('Tag', blank=True)
 
 
 class Answer(Action):
-    question = models.ForeignKey('Question')
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, null=True)
 
 
-class Reply(model.Model):
+class Reply(models.Model):
     text = models.CharField(max_length=1000)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING)
     last_updated_on = models.DateTimeField(default=timezone.now)
-    action = models.ForeignKey('Action')
+    action = models.ForeignKey('TargetAction', on_delete=models.CASCADE, null=True)
