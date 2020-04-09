@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from .forms import UserCreationForm, AuthenticationForm
 
@@ -12,23 +12,28 @@ def signup(request):
         password = form.cleaned_data.get('password1')
         user = authenticate(email=email, password=password)
         login(request, user)
-        return redirect('questions')
+        return redirect('action:questions')
     return render(request, 'user/signup.html', {'form': form})
 
 
 def signin(request):
     if request.user.is_authenticated:
-        return redirect('questions')
+        return redirect('action:questions')
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
         user = authenticate(email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('questions')
+            return redirect('action:questions')
         else:
             form = AuthenticationForm(request.POST)
             return render(request, 'user/signin.html', {'form': form})
     else:
         form = AuthenticationForm()
         return render(request, 'user/signin.html', {'form': form})
+
+
+def signout(request):
+    logout(request)
+    return redirect('action:questions')
