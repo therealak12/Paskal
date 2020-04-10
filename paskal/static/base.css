@@ -1,0 +1,14 @@
+.rtl_text {
+  text-align: right;
+}
+
+.content_right {
+  width: 670px;
+  margin-right: 20px;
+  float: right;
+}
+
+.content_left {
+  width: 250px;
+  float: left;
+}

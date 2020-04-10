@@ -1,6 +1,7 @@
 import uuid
 import os
 
+from django.conf import settings
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
@@ -8,9 +9,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 
 def get_avatar_path(instance, file_name):
     """Generate file path for the given file name"""
-    extension = file_name.split('.')[-1]
-    file_name = f'{uuid.uuid4()}.{extension}'
-    return os.path.join('images/', file_name)
+    return os.path.join('static/images/user/' + str(instance.id))
 
 
 class UserManager(BaseUserManager):

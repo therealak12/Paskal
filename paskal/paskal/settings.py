@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import locale
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'user',
     'action',
+    'jalali_date'
 ]
 
 MIDDLEWARE = [
@@ -123,13 +125,32 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'user.User'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LANGUAGE_CODE = 'fa'
+locale.setlocale(locale.LC_ALL, locale='fa_IR.UTF8')
+
+JALALI_DATE_DEFAULTS = {
+    'Strftime': {
+        'date': '%y/%m/%d',
+        'datetime': '%H:%M:%S _ %y/%m/%d',
+    },
+    'Static': {
+        'js': [
+            'admin/js/django_jalali.min.js',
+        ],
+        'css': {
+            'all': [
+                'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css',
+            ]
+        }
+    },
+}
+
 STATIC_URL = ('/static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-LANGUAGE_CODE = 'fa-ir'
+MEDIA_ROOT = 'static/media/'
+MEDIA_URL = os.path.join(BASE_DIR, 'media/')

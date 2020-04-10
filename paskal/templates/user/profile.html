@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jalali_tags %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'user/profile.css' %}>
+
+<div class="container">
+    <div class="row main_container">
+        <div class="col col-8">
+            <div class="row">
+                <strong>
+                    پروفایل {{ user.name }}
+                </strong>
+            </div>
+            <div class="row">
+                <img class="user_image" src="{{ user.avatar.url }}" alt="user_profile_image">
+                <div class="info_wrapper">
+                    <p>زمان عضویت: {{ user.date_joined|to_jalali:'%d %B %y' }}</p>
+                    <p>امتیاز: {{ user.score }}</p>
+                </div>
+            </div>
+            <div class="row">
+                {% if user.bio %}
+                {{user.bio}}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col col-4 rtl_text content_left">
+            برای دریافت امتیاز به سوالات جواب بدهید<br>
+            یا سوالات خود را بپرسید :)
+        </div>
+    </div>
+</div>
+{% endblock %}

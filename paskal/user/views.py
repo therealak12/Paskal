@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
 from .forms import UserCreationForm, AuthenticationForm
+from .models import User
 
 
 def signup(request):
@@ -37,3 +38,8 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('action:question-list')
+
+
+def profile(request, id, name):
+    user = User.objects.get(id=id)
+    return render(request, 'user/profile.html', {'user': user})
