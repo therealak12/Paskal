@@ -19,11 +19,18 @@
                     <p>امتیاز: {{ user.score }}</p>
                 </div>
             </div>
+            <br>
             <div class="row">
                 {% if user.bio %}
                 {{user.bio}}
                 {% endif %}
             </div>
+            <br><br>
+            {% for question in user.question_set.all %}
+            <div class="row">
+                <a class="rtl_text" href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a>
+            </div>
+            {% endfor %}
         </div>
         <div class="col col-4 rtl_text content_left">
             برای دریافت امتیاز به سوالات جواب بدهید<br>

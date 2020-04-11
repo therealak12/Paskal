@@ -45,8 +45,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     bio = models.CharField(max_length=160, blank=True)
     avatar = models.ImageField(upload_to=get_avatar_path, blank=True)
     score = models.IntegerField(default=0)
-    # TODO Question model should have foreign key to user (one to many relationship)
-    # TODO Answer model should have foreign key to user (one to many relationship)
 
     objects = UserManager()
 

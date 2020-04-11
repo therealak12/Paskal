@@ -27,11 +27,11 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Paskal</a>
             <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
                 <li class="nav-item text-black">
                     <a class="nav-link text-black font-weight-bold"
                         href="{% url 'user:profile' id=user.id name=user.name %}">{{ user.name }}</a>
                 </li>
-                {% if user.is_authenticated %}
                 <li class="nav-item text-black">
                     <a class="nav-link text-black font-weight-bold" href="{% url 'user:signout' %}">خروج</a>
                 </li>
