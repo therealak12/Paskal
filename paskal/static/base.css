@@ -20,3 +20,11 @@
 .sidebar {
   text-align: center;
 }
+
+.main_row {
+  margin-top: 20px;
+}
+
+.inner_row_1 {
+  margin: 5px;
+}

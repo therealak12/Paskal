@@ -3,27 +3,35 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href={% static 'action/question_list.css' %}>
 <div class="container">
-    <div class="col col-8 content_right">
-        {% for question in object_list %}
-        <div class="q_wrapper">
-            <div class="q_stat" dir="rtl">
-                {{ question.score }}امتیاز
-                {{ question.answers | length }}جواب
-            </div>
-            <div class="q_description">
-                <div class="q_title">
-                    <h5><a href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a></h5>
+    <div class="row main_row main_container">
+        <div class="col col-8">
+            {% for question in object_list %}
+            <div class="row main_row q_wrapper">
+                <div class="col col2">
+                    <div class="q_stat" dir="rtl">
+                        {{ question.score }}امتیاز
+                        {{ question.answers | length }}جواب
+                    </div>
                 </div>
-                <br>
-                <div class="q_details">
-                    {{ question.text|truncatechars:100 }}
+                <div class="col col-10">
+                    <div class="row inner_row_1">
+                        <div class="q_title">
+                            <h5><a href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row inner_row_1">
+                        <div class="q_details">
+                            {{ question.text|truncatechars:100 }}
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    <div class="col col-4 sidebar">
-        <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
+        <div class="col col-4 sidebar">
+            <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
+        </div>
     </div>
 </div>
 {% endblock %}

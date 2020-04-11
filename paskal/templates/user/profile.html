@@ -5,14 +5,14 @@
 <link rel="stylesheet" type="text/css" href={% static 'user/profile.css' %}>
 
 <div class="container">
-    <div class="row main_container">
+    <div class="row main_row main_container">
         <div class="col col-8">
-            <div class="row">
+            <div class="row main_row">
                 <strong>
                     پروفایل {{ user.name }}
                 </strong>
             </div>
-            <div class="row">
+            <div class="row main_row">
                 <img class="user_image" src="{{ user.avatar.url }}" alt="user_profile_image">
                 <div class="info_wrapper">
                     <p>زمان عضویت: {{ user.date_joined|to_jalali:'%d %B %y' }}</p>
@@ -20,14 +20,14 @@
                 </div>
             </div>
             <br>
-            <div class="row">
+            <div class="row main_row">
                 {% if user.bio %}
                 {{user.bio}}
                 {% endif %}
             </div>
             <br><br>
             {% for question in user.question_set.all %}
-            <div class="row">
+            <div class="row main_row">
                 <a class="rtl_text" href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a>
             </div>
             {% endfor %}

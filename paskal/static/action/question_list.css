@@ -1,7 +1,5 @@
 .q_wrapper {
   border-bottom: solid 1px rgb(190, 190, 190);
-  height: 100px;
-  width: 900px;
 }
 
 .q_stat {
@@ -15,13 +13,6 @@
   position: relative;
   margin-top: 15px;
   margin-bottom: 15px;
-}
-
-.q_description {
-  position: relative;
-  margin-top: 15px;
-  float: right;
-  margin-right: 20px;
 }
 
 .q_title {
