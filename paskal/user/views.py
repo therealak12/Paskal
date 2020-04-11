@@ -40,6 +40,6 @@ def signout(request):
     return redirect('action:question-list')
 
 
-def profile(request, id, name):
+def profile(request, id):
     user = User.objects.get(id=id)
     return render(request, 'user/profile.html', {'user': user})

@@ -1,3 +1,7 @@
+.main_container {
+  direction: rtl;
+}
+
 .rtl_text {
   text-align: right;
 }
@@ -11,4 +15,8 @@
 .content_left {
   width: 250px;
   float: left;
+}
+
+.sidebar {
+  text-align: center;
 }

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href={% static 'action/question.css' %}>
+<link rel="stylesheet" type="text/css" href={% static 'action/question_list.css' %}>
 <div class="container">
     <div class="col col-8 content_right">
         {% for question in object_list %}
@@ -12,7 +12,7 @@
             </div>
             <div class="q_description">
                 <div class="q_title">
-                    <strong>{{ question.title }}</strong>
+                    <h5><a href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a></h5>
                 </div>
                 <br>
                 <div class="q_details">
@@ -22,7 +22,7 @@
         </div>
         {% endfor %}
     </div>
-    <div class="col col-4 rtl_text content_left">
+    <div class="col col-4 sidebar">
         <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
     </div>
 </div>

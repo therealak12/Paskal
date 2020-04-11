@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<!-- <link rel="stylesheet" type="text/css" href={% static 'action/question.css' %}> -->
+<link rel="stylesheet" type="text/css" href={% static 'action/question_detail.css' %}>
 <div class="container">
-    <p>salam</p>
+    <div class="row main_container">
+        <div class="col col-8">
+            <div class="row">
+                <h4 class="q_title rtl_text">{{ question.title }}</h4>
+            </div>
+            <div class="row">
+                <div class="col col-1 q_score">
+                    {{ question.score }}
+                </div>
+                <div class="rtl_text" class="col col-7">
+                    {{ question.text }}
+                </div>
+            </div>
+            <div class="row">
+                {% for tag in question.tags.all %}
+                <a href="#" class="q_tag">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col col-4 sidebar">
+            <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
+        </div>
+    </div>
 </div>
 {% endblock %}
