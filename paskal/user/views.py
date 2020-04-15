@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import UserCreationForm, AuthenticationForm
+from .forms import UserCreationForm, AuthenticationForm, EditProfile
 from .models import User
 
 
@@ -43,3 +43,24 @@ def signout(request):
 def profile(request, id):
     user = User.objects.get(id=id)
     return render(request, 'user/profile.html', {'user': user})
+
+
+def user_activity(request, id):
+    user = User.objects.get(id=id)
+    return render(request, 'user/user-activity.html', {'user': user})
+
+
+def user_edit(request):
+    if request.method == 'POST':
+        form = EditProfile(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            user = User.objects.get(id=request.user.id)
+            return render(request, 'user/profile.html', {'user': user})
+    else:
+        form = EditProfile(instance=request.user)
+        return render(request, 'user/user-edit.html', {'form': form})
+
+
+
+

@@ -49,6 +49,16 @@
             </ul>
         </div>
     </nav>
+    <div class="rightbox">
+        <nav>
+            <ul>
+                <li><a href="{% url 'action:question-list' %}">خانه</a></li>
+                <li><a href="{% url 'action:question-list' %}">تگ ها</a></li>
+                <li><a href="{% url 'action:question-list' %}">کاربران</a></li>
+                <li><a href="{% url 'action:question-list' %}">سوالات</a></li>
+            </ul>
+        </nav>
+    </div>
     {% block content %}
     {% endblock content %}
     <footer class="footer"

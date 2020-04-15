@@ -28,3 +28,21 @@
 .inner_row_1 {
   margin: 5px;
 }
+
+.rightbox {
+  width: 15%;
+  max-width: 100%;
+  float: right;
+  padding-top: 25px;
+  padding-right: 25px;
+  text-align: right;
+}
+.rightbox ul{
+  list-style-type:none;
+}
+.rightbox li{
+  padding-top: 10px;
+}
+.rightbox a{
+  color: black;
+}

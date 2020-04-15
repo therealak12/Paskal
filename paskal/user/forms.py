@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import forms, ReadOnlyPasswordHashField, UserCreationForm as BaseUserCreationForm,\
     UserChangeForm as BaseUserChangeForm
 from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth.forms import UserChangeForm
 
 from .models import User
 
@@ -70,3 +71,10 @@ class AuthenticationForm(forms.Form):
     class Meta:
         model = get_user_model()
         fields = ('email', 'password')
+
+
+class EditProfile(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('email', 'name', 'bio', 'avatar', 'password')
+

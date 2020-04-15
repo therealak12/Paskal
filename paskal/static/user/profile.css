@@ -1,20 +1,27 @@
-.user_name {
-  width: 400px;
-  float: right;
+.user-profile-info{
+    padding-top: 50px;
+    padding-right: 50px;
+    padding-left: 50px;
 }
-
-.user_image {
-  box-shadow: 4px 4px 10px -3px #888888;
-  width: 134px;
-  height: 134px;
-  background-color: white;
-  float: right;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+.user-p-image{
+    float: right;
+    width: 150px;
+    height: 150px;
 }
-
-.info_wrapper {
-  text-align: right;
-  direction: rtl;
+.name-and-bio{
+    float: right;
+    padding-top: 20px;
+    padding-right: 50px;
+}
+.name-and-bio h2{
+    text-align: right;
+}
+.name-and-bio p{
+    text-align: right;
+    color: #003eff;
+}
+.score{
+    float: left;
+    padding-top: 20px;
+    padding-left: 50px;
 }

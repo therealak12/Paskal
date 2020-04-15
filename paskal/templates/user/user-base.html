@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jalali_tags %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'user/user-base.css' %}>
+
+<div class="container">
+    <div class="user-header">
+        <nav class="user-prof-links">
+            <ul>
+                <li>
+                    <a href="{% url 'user:profile' id=user.id %}" class="user-profile">
+                        پروفایل
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'user:activity' id=user.id %}" class="user-profile">
+                        فعالیت ها
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'user:edit'%}" class="user-profile">
+                       ویرایش
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <img class="user_image" src="{{ user.avatar.url }}" alt="user_profile_image">
+    </div>
+</div>
+    {% block user-info %}
+    {% endblock user-info %}
+
+{% endblock %}

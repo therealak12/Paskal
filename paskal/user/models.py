@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=35, )
     bio = models.CharField(max_length=160, blank=True)
-    avatar = models.ImageField(upload_to=get_avatar_path, blank=True)
+    avatar = models.ImageField(upload_to=get_avatar_path, blank=True, default='static/images/user/default.png')
     score = models.IntegerField(default=0)
 
     objects = UserManager()
@@ -52,3 +52,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.name
+
+
+

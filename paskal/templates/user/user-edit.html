@@ -1,0 +1,16 @@
+{% extends 'user/user-base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load jalali_tags %}
+{% block user-info %}
+<link rel="stylesheet" type="text/css" href={% static 'user/profile.css' %}>
+    <link rel="stylesheet" type="text/css" href={% static 'user/custom_form.css' %}>
+    <div class="user-activity">
+        <p>user-edit</p>
+        <form action="{% url 'user:edit' %}" method="POST" id="rtl_form">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}

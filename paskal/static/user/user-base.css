@@ -1,0 +1,44 @@
+.container{
+  width: 85%;
+  padding-top: 0px;
+  float: left;
+}
+.user-header {
+  width: 100%;
+  float: right;
+}
+.user-prof-links{
+  width: 95%;
+  float: right;
+}
+
+.user_image{
+  width: 5%;
+  height: 5%;
+  float: left;
+}
+
+
+.user-header ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+
+.user-header li {
+  float: right;
+}
+
+.user-header li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.user-header li a:hover {
+  background-color: #111111;
+}
