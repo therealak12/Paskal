@@ -1,18 +1,44 @@
-{% extends 'user/user-base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load jalali_tags %}
-{% block user-info %}
+{% block content %}
 <link rel="stylesheet" type="text/css" href={% static 'user/profile.css' %}>
-    <div class="user-profile-info">
-        <img class="user-p-image" src="{{ user.avatar.url }}" alt="user_profile_image">
-        <div class="name-and-bio">
-            <h2>{{ user.name }}</h2>
-            <p>{{ user.bio }}</p>
+<div class="container">
+    <div class="row main_row main_container">
+        <div class="col col-8">
+            <div class="row main_row">
+                <strong>
+                    پروفایل {{ user.name }}
+                </strong>
+            </div>
+            <div class="row main_row">
+                <img class="user_image" src="{{ user.avatar.url }}" alt="user_profile_image">
+                <div class="info_wrapper">
+                    <p>زمان عضویت: {{ user.date_joined|to_jalali:'%d %B %y' }}</p>
+                    <p>امتیاز: {{ user.score }}</p>
+                </div>
+            </div>
+            <br>
+            <div class="row main_row">
+                {% if user.bio %}
+                {{user.bio}}
+                {% endif %}
+            </div>
+            <br><br>
+            <div class="row main_row">
+                <ul class="list-group list-group-flush">
+                    <h4 class="rtl_text">پرسش‌ها</h4>
+                    {% for question in user.question_set.all %}
+                    <a class="rtl_text list-group-item list-group-item-action"
+                        href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <div class="score">
-            <p><img src="static/media/static/images/score-icon.png"> : {{ user.score }}</p>
-            <p style="color: #003eff">{{ user.email }}</p>
-            <p>زمان عضویت: {{ user.date_joined|to_jalali:'%d %B %y' }}</p>
+        <div class="col col-4 sidebar">
+            برای دریافت امتیاز به سوالات جواب بدهید<br>
+            یا سوالات خود را بپرسید :)
         </div>
     </div>
+</div>
 {% endblock %}
