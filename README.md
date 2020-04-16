@@ -19,6 +19,7 @@ CREATE USER paskal_user WITH ENCRYPTED PASSWORD 'secure_pass';
 ALTER ROLE paskal_user SET client_encoding TO 'utf8';
 ALTER ROLE paskal_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE paskal_user SET timezone TO 'UTC';
+ALTER USER paskal_user CREATEDB;
 GRANT ALL PRIVILEGES ON DATABASE paskal TO paskal_user;
 ```
 
@@ -29,8 +30,14 @@ cd Paskal
 python3 -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
+cd paskal
 python manage.py migrate
 python manage.py runserver
 ```
 
 The website is then up and running at <http://localhost:8000>
+
+## Test The Project
+
+cd paskal
+coverage run manage.py test -v 2
