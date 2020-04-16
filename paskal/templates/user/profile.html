@@ -12,6 +12,7 @@
         <div class="score">
             <p><img src="static/media/static/images/score-icon.png"> : {{ user.score }}</p>
             <p style="color: #003eff">{{ user.email }}</p>
+            <p>زمان عضویت: {{ user.date_joined|to_jalali:'%d %B %y' }}</p>
         </div>
     </div>
 {% endblock %}

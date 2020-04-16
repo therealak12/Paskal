@@ -29,19 +29,22 @@
   margin: 5px;
 }
 
-.rightbox {
-  width: 15%;
-  max-width: 100%;
-  float: right;
-  padding-top: 25px;
-  padding-right: 25px;
-  text-align: right;
+.mian-content{
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+}
+
+
+.rightbox{
+  margin-top: 30px;
+  margin-right: 30px;
 }
 .rightbox ul{
   list-style-type:none;
 }
 .rightbox li{
   padding-top: 10px;
+  text-align: right;
 }
 .rightbox a{
   color: black;
