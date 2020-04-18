@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class Action(models.Model):
     text = models.TextField()
-    score = models.IntegerField()
+    score = models.IntegerField(default=0)
     # When a user is deleted we still keep his/her questions
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING)
@@ -33,7 +33,8 @@ class Question(Action):
 
 
 class Answer(Action):
-    question = models.ForeignKey('Question', on_delete=models.CASCADE, null=True)
+    question = models.ForeignKey(
+        'Question', on_delete=models.CASCADE, null=True)
 
 
 class Reply(models.Model):
@@ -41,4 +42,5 @@ class Reply(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING)
     last_updated_on = models.DateTimeField(default=timezone.now)
-    action = models.ForeignKey('TargetAction', on_delete=models.CASCADE, null=True)
+    action = models.ForeignKey(
+        'TargetAction', on_delete=models.CASCADE, null=True)

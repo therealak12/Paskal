@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'user',
     'action',
-    'jalali_date'
+    'jalali_date',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +154,6 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = 'static/media/'
 MEDIA_URL = os.path.join(BASE_DIR, 'media/')
+
+# default login path for login_required redirection
+LOGIN_URL = '/users/signin'

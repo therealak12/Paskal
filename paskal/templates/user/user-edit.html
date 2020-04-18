@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href={% static 'user/custom_form.css' %}>
     <div class="user-activity">
         <p>user-edit</p>
-        <form action="{% url 'user:edit' %}" method="POST" id="rtl_form">
+        <form action="{% url 'user:edit' %}" method="POST" id="rtl_text">
             {% csrf_token %}
             {{ form }}
             <button type="submit">Submit</button>
