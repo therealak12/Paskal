@@ -39,5 +39,7 @@ The website is then up and running at <http://localhost:8000>
 
 ## Test The Project
 
+```bash
 cd paskal
 coverage run manage.py test -v 2
+```
