@@ -21,8 +21,18 @@
                 <a href="#" class="q_tag">{{ tag }}</a>
                 {% endfor %}
             </div>
+            {% if question.user == request.user %}
+            <div class="row main_row">
+                <hr>
+                <a class="btn btn-info col col-lg-2 col-md-1" href="{% url 'action:question-edit' pk=question.id %}">ویرایش</a>
+                &nbsp;
+                {% if can_delete %}
+                <a class="btn btn-danger col col-lg-2 col-md-1" href="{% url 'action:question-delete' pk=question.id %}">حذف</a>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
-        <div class="col col-4 sidebar">
+        <div class="col col-lg-4 d-none d-md-block sidebar">
             <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
         </div>
     </div>

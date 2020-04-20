@@ -51,24 +51,8 @@
                 </ul>
             </div>
         </nav>
-        <div class="row">
-            <div class="col col-lg-10 col-md-8 col-sm-8">
-                {% block content %}
-                {% endblock content %}
-            </div>
-            <div class="col col-lg-2 col-md-4 col-sm-4 main_row content_right">
-                <div class="center_text">
-                    <a class="list-group-item list-group-item-action border-light"
-                        href="{% url 'action:question-list' %}">پرسش‌ها</a>
-                    <a class="list-group-item list-group-item-action border-light"
-                        href="{% url 'action:question-create' %}">!سوال جدید دارم</a>
-                    <a class="list-group-item list-group-item-action border-light"
-                        href="{% url 'action:question-list' %}">پرسش‌ها</a>
-                    <a class="list-group-item list-group-item-action border-light"
-                        href="{% url 'action:question-list' %}">پرسش‌ها</a>
-                </div>
-            </div>
-        </div>
+        {% block content %}
+        {% endblock content %}
         <footer class="footer"
             style="width: 100%; position: fixed; bottom: 0; line-height: 60px; height:60px; background-color: #f5f5f5;">
             <p class="m-0 text-dark text-center ">Copyright &copy; SAD-7-GROUP</p>

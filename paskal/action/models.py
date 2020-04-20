@@ -31,6 +31,9 @@ class Question(Action):
     title = models.CharField(max_length=500)
     tags = models.ManyToManyField('Tag', blank=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Answer(Action):
     question = models.ForeignKey(
