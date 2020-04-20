@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'user/custom_form.css' %}>
+<div class="container">
+    <form action="{% url 'action:question-edit' pk=question.id %}" method="POST" dir="rtl" class="rtl_text">
+        {% csrf_token %}
+        <div class="main_row">
+            {{form | crispy}}
+        </div>
+        <button class="btn btn-success">ثبت پرسش</button>
+    </form>
+</div>
+{% endblock %}

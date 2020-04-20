@@ -8,6 +8,4 @@ urlpatterns = [
     path('signout', signout, name='signout'),
     path('edit', user_edit, name='edit'),
     path('<int:id>', profile, name='profile'),
-    path('<int:id>/activity', user_activity, name='activity'),
-
 ]

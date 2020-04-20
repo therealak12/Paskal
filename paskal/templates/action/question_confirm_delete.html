@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" action="{% url 'action:question-delete' pk=object.id %}" class="center_text main_row panel panel-default panel-body">
+    {% csrf_token %}
+    <p>آیا سوال با عنوان "{{ object }}" حذف شود؟</p>
+    <button class="btn btn-success">بله</button>
+    <button class="btn btn-info">خیر</button>
+</form>
+{% endblock %}
