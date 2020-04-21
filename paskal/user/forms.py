@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import forms, ReadOnlyPasswordHashField, UserCreationForm as BaseUserCreationForm,\
-    UserChangeForm as BaseUserChangeForm
+    UserChangeForm as BaseUserChangeForm, PasswordChangeForm as BasePasswordChangeForm
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserChangeForm
 
@@ -54,7 +54,7 @@ class UserChangeForm(BaseUserChangeForm):
 
     class Meta:
         model = User
-        fields = ('email', 'name', 'password')
+        fields = ('email', 'name', 'bio', 'avatar', 'password')
 
     def clean_password(self):
         return self.initial["password"]
@@ -74,6 +74,30 @@ class AuthenticationForm(forms.Form):
 
 
 class EditProfile(UserChangeForm):
+    name = forms.CharField(label='تغییر نام', widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'dir': 'rtl',
+        }
+    ))
+
+    email = forms.EmailField(label='تغییر ایمیل', widget=forms.EmailInput(
+        attrs={
+            'class': 'form-control',
+        }
+    ))
+
+    bio = forms.CharField(label='تغییر بیو', widget=forms.Textarea(
+        attrs={
+            'rows': 1, 'cols': 15,
+            'autofocus': 'autofocus',
+            'class': 'form-control',
+            'dir': 'rtl',
+        }
+    ))
+
+
+    avatar = forms.ImageField(label='تغییر عکس')
     class Meta:
         model = User
         fields = ('email', 'name', 'bio', 'avatar', 'password')

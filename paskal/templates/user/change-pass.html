@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'user/custom_form.css' %}>
+<div class="container form_container">
+    <form action="{% url 'user:changepass' %}" method="POST" class="rtl_text">
+        {% csrf_token %}
+        <div class="row justify-content-end">
+            <div class="col-6">
+                {{ form.old_password |as_crispy_field}}
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-6">
+                {{ form.new_password2 |as_crispy_field}}
+            </div>
+            <div class="col-6">
+                {{ form.new_password1 |as_crispy_field}}
+            </div>
+        </div>
+        <div class="col col-3">
+            <button class="btn btn-success">تغییر رمز</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

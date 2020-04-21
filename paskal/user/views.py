@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
 from .forms import UserCreationForm, AuthenticationForm, EditProfile
+from django.contrib.auth.forms import PasswordChangeForm
 from .models import User
 
 
@@ -62,5 +63,14 @@ def user_edit(request):
         return render(request, 'user/user-edit.html', {'form': form})
 
 
-
+def changepass(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            user = User.objects.get(id=request.user.id)
+            return render(request, 'user/profile.html', {'user': user})
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'user/change-pass.html', {'form': form})
 

@@ -1,16 +1,34 @@
-{% extends 'user/user-base.html' %}
-{% load static %}
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% load jalali_tags %}
-{% block user-info %}
-<link rel="stylesheet" type="text/css" href={% static 'user/profile.css' %}>
-    <link rel="stylesheet" type="text/css" href={% static 'user/custom_form.css' %}>
-    <div class="user-activity">
-        <p>user-edit</p>
-        <form action="{% url 'user:edit' %}" method="POST" id="rtl_text">
-            {% csrf_token %}
-            {{ form }}
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'user/custom_form.css' %}>
+<div class="container form_container">
+    <form action="{% url 'user:edit' %}" method="POST" class="rtl_text">
+        {% csrf_token %}
+        <div class="row justify-content-end">
+            <div class="col-6">
+                {{form.name|as_crispy_field}}
+            </div>
+            <div class="col-6">
+                {{form.email|as_crispy_field}}
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-6">
+                {{ form.bio |as_crispy_field}}
+            </div>
+            <div class="col-6">
+                {{ form.avatar |as_crispy_field}}
+            </div>
+        </div>
+        <div class="col col-3 justify-content-end">
+            <button class="btn btn-success" formaction="{% url 'user:changepass' %}" style="background: gray; margin: 5px">تغییر رمز عبور</button>
+        </div>
+        <div class="col col-3 justify-content-end">
+            <button class="btn btn-success">ویرایش اطلاعات</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
+
