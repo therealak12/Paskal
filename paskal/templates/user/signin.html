@@ -17,6 +17,9 @@
             </div>
         </div>
         <div class="col col-3 justify-content-end">
+            {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
             <button class="btn btn-success">ورود</button>
         </div>
     </form>

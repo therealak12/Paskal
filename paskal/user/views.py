@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
@@ -27,7 +28,10 @@ def signin(request):
         user = authenticate(email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('action:question-list')
+            if 'next' in request.POST:
+                return redirect(request.POST.get("next"))
+            else:
+                return redirect('action:question-list')
         else:
             form = AuthenticationForm(request.POST)
             return render(request, 'user/signin.html', {'form': form})
@@ -41,16 +45,19 @@ def signout(request):
     return redirect('action:question-list')
 
 
+@login_required(login_url='/users/signin')
 def profile(request, id):
     user = User.objects.get(id=id)
     return render(request, 'user/profile.html', {'user': user})
 
 
+@login_required(login_url='/users/signin')
 def user_activity(request, id):
     user = User.objects.get(id=id)
     return render(request, 'user/user-activity.html', {'user': user})
 
 
+@login_required(login_url='/users/signin')
 def user_edit(request):
     if request.method == 'POST':
         form = EditProfile(request.POST, instance=request.user)
@@ -63,6 +70,7 @@ def user_edit(request):
         return render(request, 'user/user-edit.html', {'form': form})
 
 
+@login_required(login_url='/users/signin')
 def changepass(request):
     if request.method == "POST":
         form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -73,4 +81,3 @@ def changepass(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'user/change-pass.html', {'form': form})
-
