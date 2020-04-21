@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import forms, ReadOnlyPasswordHashField, UserCreationForm as BaseUserCreationForm,\
+from django.contrib.auth.forms import forms, ReadOnlyPasswordHashField, UserCreationForm as BaseUserCreationForm, \
     UserChangeForm as BaseUserChangeForm, PasswordChangeForm as BasePasswordChangeForm
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserChangeForm
@@ -96,9 +96,8 @@ class EditProfile(UserChangeForm):
         }
     ))
 
-
     avatar = forms.ImageField(label='تغییر عکس')
+
     class Meta:
         model = User
         fields = ('email', 'name', 'bio', 'avatar', 'password')
-
