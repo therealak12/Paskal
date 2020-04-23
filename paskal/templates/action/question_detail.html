@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href={% static 'action/question_detail.css' %}>
+<link rel="stylesheet" type="text/css" href={% static 'common/custom_form.css' %}>
 <div class="container">
     <div class="row main_row main_container">
         <div class="col col-8">
@@ -24,11 +26,36 @@
             {% if question.user == request.user %}
             <div class="row main_row">
                 <hr>
-                <a class="btn btn-info col col-lg-2 col-md-1" href="{% url 'action:question-edit' pk=question.id %}">ویرایش</a>
+                <a class="btn btn-info col col-lg-2 col-md-1"
+                    href="{% url 'action:question-edit' pk=question.id %}">ویرایش</a>
                 &nbsp;
                 {% if can_delete %}
-                <a class="btn btn-danger col col-lg-2 col-md-1" href="{% url 'action:question-delete' pk=question.id %}">حذف</a>
+                <a class="btn btn-danger col col-lg-2 col-md-1"
+                    href="{% url 'action:question-delete' pk=question.id %}">حذف</a>
                 {% endif %}
+            </div>
+            {% endif %}
+            <br><br><br><br>
+            <div class="qa_divider row main_row center_text ans_title">
+                <h3>پاسخ‌ها</h3>
+            </div>
+            {% for answer in question.answer_set.all %}
+            <div class="ans_wrapper">
+                <div class="row inner_row_1">
+                    <p class="rtl_text">{{ answer.text }}</p>
+                </div>
+                <div class="row inner_row_1 answer_user_section">
+                    <a href="{% url 'user:profile' id=answer.user.id %}">{{ answer.user }}</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% if request.user.is_authenticated %}
+            <div class="row main_row">
+                <form method="POST" dir="rtl" class="col col-12 rtl_text">
+                    {% csrf_token %}
+                    {{ form.text | as_crispy_field }}
+                    <button class="btn btn-success">ثبت پاسخ</button>
+                </form>
             </div>
             {% endif %}
         </div>

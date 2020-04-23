@@ -1,3 +1,7 @@
+body {
+  background-color: #eeeeee;
+}
+
 .main_container {
   direction: rtl;
 }
