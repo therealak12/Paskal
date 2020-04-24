@@ -27,3 +27,19 @@
 .q_tag:hover {
   background-color: #eeeeee;
 }
+
+.ans_title {
+  border-bottom: solid 1px lightgrey;
+}
+
+.ans_wrapper {
+  border-bottom: dotted 1px rgb(220, 220, 220);
+}
+
+.qa_divider {
+  padding-top: 10px;
+}
+
+.answer_user_section {
+  direction: ltr;
+}
