@@ -19,7 +19,15 @@
                 {{ form.bio |as_crispy_field}}
             </div>
             <div class="col-6">
-                {{ form.avatar |as_crispy_field}}
+                <div id="div_id_avatar" class="form-group">
+
+            <label for="id_avatar" class=" requiredField">
+                تغییر عکس<span class="asteriskField">*</span>
+            </label>
+                <div class="">
+                <input type="file" name="avatar" accept="image/*" class="clearablefileinput form-control-file" id="id_avatar">
+                </div>
+    </div>
             </div>
         </div>
         <div class="col col-3 justify-content-end">
