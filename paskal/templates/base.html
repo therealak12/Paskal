@@ -25,7 +25,7 @@
 
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm" id="mainNav">
+        <nav class="navbar navbar-default fixed-top navbar-expand-lg bg-light shadow-sm">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Paskal</a>
                 <ul class="navbar-nav ml-auto">
@@ -51,7 +51,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="row">
+        <div class="row main_content_wrapper">
             <div class="col col-lg-10 col-md-8 col-sm-8">
                 {% block content %}
                 {% endblock content %}
@@ -69,9 +69,8 @@
                 </div>
             </div>
         </div>
-        <footer class="footer"
-            style="width: 100%; position: fixed; bottom: 0; line-height: 60px; height:60px; background-color: #f5f5f5;">
-            <p class="m-0 text-dark text-center ">Copyright &copy; SAD-7-GROUP</p>
+        <footer class="footer col-8">
+            <p class="text-dark">Copyright &copy; SAD-7-GROUP</p>
         </footer>
     </div>
 </body>

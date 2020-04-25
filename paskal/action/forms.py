@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import forms
 
-from .models import Question
+from .models import Question, Answer
 
 
 class QuestionCreateForm(forms.ModelForm):
@@ -26,3 +26,19 @@ class QuestionCreateForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ('title', 'text', 'tags')
+
+
+class AnswerCreateForm(forms.ModelForm):
+    text = forms.CharField(
+        label='پاسخ شما',
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control',
+                'dir': 'rtl',
+            }
+        )
+    )
+
+    class Meta:
+        model = Answer
+        fields = ('text',)

@@ -2,10 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, reverse
 from django.core.exceptions import PermissionDenied
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, ListView
+from django.views.generic.edit import FormMixin
 from django.utils import timezone
 
-from .models import Question
-from .forms import QuestionCreateForm
+from .models import Question, Answer
+from .forms import QuestionCreateForm, AnswerCreateForm
 
 
 class QuestionListView(ListView):
@@ -14,13 +15,35 @@ class QuestionListView(ListView):
     ordering = ['-created_on']
 
 
-class QuestionDetailView(DetailView):
+class QuestionDetailView(FormMixin, DetailView):
     model = Question
+    form_class = AnswerCreateForm
 
     def get_context_data(self, **kwargs):
         context = super(QuestionDetailView, self).get_context_data(**kwargs)
         context['can_delete'] = True
         return context
+    
+    def get_success_url(self):
+        return reverse('action:question-detail', kwargs={'pk': self.object.pk})
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+    
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        answer = form.save(commit=False)
+        answer.user = self.request.user
+        answer.question = self.object
+        answer.save()
+        return super().form_valid(form)
 
 
 class QuestionCreateView(CreateView):

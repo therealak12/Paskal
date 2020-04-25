@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.test import TestCase, Client
+from django.test import TestCase, Client, SimpleTestCase
 from django.contrib.auth import get_user_model
 
 from .models import Tag, Question
@@ -62,8 +62,8 @@ class PrivateQuestionCreateTests(TestCase):
         resp = self.client.post(reverse('action:question-create'), payload)
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(Question.objects.count(), 1)
-        self.assertEqual(Question.objects.get(id=1).title, payload['title'])
-        self.assertEqual(Question.objects.get(id=1).text, payload['text'])
+        self.assertEqual(Question.objects.filter()[0].title, payload['title'])
+        self.assertEqual(Question.objects.filter()[0].text, payload['text'])
 
 
 class PublicQuestionUpdateTests(TestCase):
@@ -118,3 +118,36 @@ class PrivateQuestionUpdateTests(TestCase):
             reverse('action:question-delete', kwargs={'pk': '{}'.format(question.id)}))
         self.assertEqual(resp.status_code, 302)
         self.assertEqual(Question.objects.count(), 0)
+
+
+class PublicAnswerTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_answer_anonymous_user(self):
+        """ The app should throw an exception when anonymous user want's to answer a questin"""
+        question = create_sample_question(create_sample_user())
+        payload = {
+            'text': 'a text for test'
+        }
+        with self.assertRaises(ValueError):
+            resp = self.client.post(
+                reverse('action:question-detail', kwargs={'pk': question.id}), payload)
+
+
+class PrivateAnswerTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = create_sample_user('pat@example.com')
+        self.client.force_login(self.user)
+
+    def test_answer_valid_user(self):
+        """ The app should throw an exception when anonymous user want's to answer a questin"""
+        question = create_sample_question(self.user, 'pat_qtitle')
+        question.refresh_from_db()
+        payload = {
+            'text': 'a text for test'
+        }
+        resp = self.client.post(
+            reverse('action:question-detail', kwargs={'pk': question.id}), payload)
+        self.assertEqual(resp.status_code, 302)
