@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, reverse
 from django.core.exceptions import PermissionDenied
@@ -84,3 +85,36 @@ class QuestionDeleteView(DeleteView):
         if self.request.user != self.get_object().user:
             raise PermissionDenied
         return super().get(request, *args, **kwargs)
+
+
+def vote_question(request, pk):
+    question = Question.objects.get(pk=pk)
+    vote = int(request.GET.get('vote', '0'))
+    question.score += vote
+    if vote == 1:
+        question.user.score += 10
+    elif vote == -1:
+        question.user.score -= 2
+    question.user.save()
+    question.save()
+    response = JsonResponse({
+        'score': question.score,
+    })
+    response.status_code = 200
+    return response
+
+def vote_answer(request, pk):
+    answer = Answer.objects.get(pk=pk)
+    vote = int(request.GET.get('vote', '0'))
+    answer.score += vote
+    if vote == 1:
+        answer.user.score += 10
+    elif vote == -1:
+        answer.user.score -= 2
+    answer.user.save()
+    answer.save()
+    response = JsonResponse({
+        'score': answer.score,
+    })
+    response.status_code = 200
+    return response

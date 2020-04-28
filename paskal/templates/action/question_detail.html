@@ -1,27 +1,101 @@
 {% extends 'base.html' %}
+{% block js_code %}
+<script>
+    $("#q_vote_up").click(function () {
+        {% if question.user != request.user %}
+            $.ajax({
+                url: "{% url 'action:question-vote' pk=question.id %}",
+                data: {
+                    'vote': '1'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#q_score").text(data.score);
+                }
+            }); 
+        {% else %}
+            alert("شما نمی‌توانید به سوال خودتان رای دهید!");
+        {% endif %}
+    });
+    $("#q_vote_down").click(function () {
+        {% if question.user != request.user %}
+            $.ajax({
+                url: "{% url 'action:question-vote' pk=question.id %}",
+                data: {
+                    'vote': '-1'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#q_score").text(data.score);
+                }
+            });
+        {% else %}
+            alert("شما نمی‌توانید به سوال خودتان رای دهید!");
+        {% endif %}
+    });
+    $(function () {
+        {% for answer in question.answer_set.all %}
+        $("#ans_vote_up_{{answer.id}}").click(function () {
+            {% if answer.user != request.user %}
+                $.ajax({
+                    url: "{% url 'action:answer-vote' pk=answer.id %}",
+                    data: {
+                        'vote': '1'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#ans_score_{{answer.id}}").text(data.score);
+                    }
+                });
+            {% else %}
+            alert("شما نمی‌توانید به پاسخ خودتان رای دهید!")
+            {% endif %}
+        });
+        $("#ans_vote_down_{{answer.id}}").click(function () {
+            {% if answer.user != request.user %}
+            $.ajax({
+                url: "{% url 'action:answer-vote' pk=answer.id %}",
+                data: {
+                    'vote': '-1'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#ans_score_{{answer.id}}").text(data.score);
+                }
+            }); 
+            {% else %}
+                alert("شما نمی‌توانید به پاسخ خودتان رای دهید!");
+            {% endif %}
+        }); 
+        {% endfor %}
+    })
+</script>
+{% endblock %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href={% static 'action/question_detail.css' %}>
 <link rel="stylesheet" type="text/css" href={% static 'common/custom_form.css' %}>
-<div class="container">
+<div class="container-fluid">
     <div class="row main_row main_container">
         <div class="col col-8">
             <div class="row main_row">
                 <h4 class="q_title rtl_text">{{ question.title }}</h4>
             </div>
             <div class="row main_row">
-                <div class="col col-1 q_score">
-                    {{ question.score }}
+                <div class="col col-1 q_score center_text">
+                    <button class="fa fa-plus btn btn-outline-success score_stuff" id="q_vote_up"></button>
+                    <div class="score_stuff" id="q_score">{{ question.score }}</div>
+                    <button class="fa fa-minus btn btn-outline-danger score_stuff" id="q_vote_down"></button>
                 </div>
-                <div class="rtl_text" class="col col-7">
+                <div class="rtl_text col col-9"">
                     {{ question.text }}
                 </div>
             </div>
-            <div class="row main_row">
-                {% for tag in question.tags.all %}
-                <a href="#" class="q_tag">{{ tag }}</a>
-                {% endfor %}
+            <div class=" row main_row">
+                    {% for tag in question.tags.all %}
+                    <a href="#" class="q_tag">{{ tag }}</a>
+                    {% endfor %}
             </div>
             {% if question.user == request.user %}
             <div class="row main_row">
@@ -42,7 +116,16 @@
             {% for answer in question.answer_set.all %}
             <div class="ans_wrapper">
                 <div class="row inner_row_1">
-                    <p class="rtl_text">{{ answer.text }}</p>
+                    <div class="col col-1 score_wrapper center_text">
+                        <button class="fa fa-plus btn btn-outline-success score_stuff"
+                            id="ans_vote_up_{{answer.id}}"></button>
+                        <div class="score_stuff" id="ans_score_{{answer.id}}">{{ answer.score }}</div>
+                        <button class="fa fa-minus btn btn-outline-danger score_stuff"
+                            id="ans_vote_down_{{answer.id}}"></button>
+                    </div>
+                    <div class="col col-11">
+                        <p class="rtl_text">{{ answer.text }}</p>
+                    </div>
                 </div>
                 <div class="row inner_row_1 answer_user_section">
                     <a href="{% url 'user:profile' id=answer.user.id %}">{{ answer.user }}</a>

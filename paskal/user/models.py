@@ -51,7 +51,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        else:
+            return self.email
 
 
 

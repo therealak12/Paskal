@@ -43,3 +43,11 @@
 .answer_user_section {
   direction: ltr;
 }
+
+.score_stuff {
+  font-size: 22px;
+}
+
+.score_wrapper {
+  padding: 0;
+}
