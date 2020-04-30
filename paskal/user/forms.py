@@ -74,6 +74,11 @@ class AuthenticationForm(forms.Form):
 
 
 class EditProfile(UserChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['bio'].required = False
+        self.fields['name'].required = False
+
     name = forms.CharField(label='تغییر نام', widget=forms.TextInput(
         attrs={
             'class': 'form-control',
@@ -90,7 +95,6 @@ class EditProfile(UserChangeForm):
     bio = forms.CharField(label='تغییر بیو', widget=forms.Textarea(
         attrs={
             'rows': 1, 'cols': 15,
-            'autofocus': 'autofocus',
             'class': 'form-control',
             'dir': 'rtl',
         }

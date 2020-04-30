@@ -1,7 +1,7 @@
 import os
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 
@@ -72,9 +72,8 @@ def user_edit(request):
                 request.user.avatar = request.FILES['avatar']
                 request.user.save()
             return redirect('user:profile', id=request.user.id)
-    else:
-        form = EditProfile(instance=request.user)
-        return render(request, 'user/user-edit.html', {'form': form})
+    form = EditProfile(instance=request.user)
+    return render(request, 'user/user-edit.html', {'form': form})
 
 
 @login_required(login_url='/users/signin')
@@ -83,8 +82,6 @@ def changepass(request):
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            user = get_user_model().objects.get(id=request.user.id)
-            return render(request, 'user/profile.html', {'user': user})
-    else:
-        form = PasswordChangeForm(user=request.user)
+            return redirect('user:profile', id=request.user.id)
+    form = PasswordChangeForm(user=request.user)
     return render(request, 'user/change-pass.html', {'form': form})
