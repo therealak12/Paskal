@@ -4,30 +4,22 @@
 {% block content %}
 <link rel="stylesheet" type="text/css" href={% static 'common/custom_form.css' %}>
 <div class="container form_container">
-    <form action="{% url 'user:edit' %}" method="POST" class="rtl_text">
+    <form action="{% url 'user:edit' %}" enctype="multipart/form-data" method="POST" class="rtl_text">
         {% csrf_token %}
         <div class="row justify-content-end">
             <div class="col-6">
-                {{form.name|as_crispy_field}}
+                {{form.name|as_crispy_field }}
             </div>
             <div class="col-6">
-                {{form.email|as_crispy_field}}
+                {{form.email|as_crispy_field }}
             </div>
         </div>
         <div class="row justify-content-end">
             <div class="col-6">
-                {{ form.bio |as_crispy_field}}
+                {{ form.bio |as_crispy_field }}
             </div>
             <div class="col-6">
-                <div id="div_id_avatar" class="form-group">
-
-            <label for="id_avatar" class=" requiredField">
-                تغییر عکس<span class="asteriskField">*</span>
-            </label>
-                <div class="">
-                <input type="file" name="avatar" accept="image/*" class="clearablefileinput form-control-file" id="id_avatar">
-                </div>
-    </div>
+                {{ form.avatar |as_crispy_field }}
             </div>
         </div>
         <div class="col col-3 justify-content-end">

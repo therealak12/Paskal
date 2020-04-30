@@ -9,7 +9,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 
 def get_avatar_path(instance, file_name):
     """Generate file path for the given file name"""
-    return os.path.join('static/images/user/' + str(instance.id))
+    return os.path.join('images/user/' + str(instance.id))
 
 
 class UserManager(BaseUserManager):
@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=35, )
     bio = models.CharField(max_length=160, blank=True)
-    avatar = models.ImageField(upload_to=get_avatar_path, blank=True, default='static/images/user/default.png')
+    avatar = models.ImageField(upload_to=get_avatar_path, blank=True, default='images/user/default.png')
     score = models.IntegerField(default=0)
 
     objects = UserManager()

@@ -150,7 +150,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-MEDIA_ROOT = 'static/media/'
+MEDIA_ROOT = 'media/'
 MEDIA_URL = os.path.join(BASE_DIR, 'media/')
 
 # default login path for login_required redirection

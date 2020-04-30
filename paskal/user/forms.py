@@ -53,7 +53,7 @@ class UserChangeForm(BaseUserChangeForm):
     password = ReadOnlyPasswordHashField()
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('email', 'name', 'bio', 'avatar', 'password')
 
     def clean_password(self):
@@ -99,5 +99,5 @@ class EditProfile(UserChangeForm):
     avatar = forms.ImageField(label='تغییر عکس')
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('email', 'name', 'bio', 'avatar', 'password')
