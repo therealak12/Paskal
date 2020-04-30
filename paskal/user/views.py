@@ -45,7 +45,6 @@ def signout(request):
     return redirect('action:question-list')
 
 
-@login_required(login_url='/users/signin')
 def profile(request, id):
     user = User.objects.get(id=id)
     return render(request, 'user/profile.html', {'user': user})
