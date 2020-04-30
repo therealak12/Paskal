@@ -1,6 +1,13 @@
+from unittest import skipIf
+
 from django.urls import reverse
-from django.test import TestCase, Client, SimpleTestCase
+from django.conf import settings
+from django.test import TestCase, Client
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
+
+from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
 
 from .models import Tag, Question
 
@@ -151,3 +158,92 @@ class PrivateAnswerTests(TestCase):
         resp = self.client.post(
             reverse('action:question-detail', kwargs={'pk': question.id}), payload)
         self.assertEqual(resp.status_code, 302)
+
+
+@skipIf(not getattr(settings, 'SELENIUM_TESTS', False), 'selenium tests are disabled in settings.py')
+class PrivateVoteTests(StaticLiveServerTestCase):
+
+    def setUp(self):
+        self.user = create_sample_user()
+        self.asking_user = create_sample_user(email='asking@example.com')
+        self.question = create_sample_question(user=self.asking_user)
+        self.own_question = create_sample_question(user=self.user)
+        self.driver = webdriver.Chrome(
+            '/usr/bin/chromedriver')
+        self.driver.maximize_window()
+        self.login_user()
+        super().setUpClass()
+
+    def login_user(self):
+        client = Client()
+        client.force_login(self.user)
+        cookie = client.cookies['sessionid']
+        self.driver.get(self.live_server_url + '/admin')
+        self.driver.add_cookie(
+            {'name': 'sessionid', 'value': cookie.value, 'secure': False, 'path': '/'})
+        self.driver.refresh()
+        self.driver.get(self.live_server_url + '/admin')
+
+    def tearDown(self):
+        self.driver.quit()
+        return super().tearDown()
+
+    def wait_ajax_complete(self):
+        """ Wait until ajax request is completed """
+        WebDriverWait(self.driver, timeout=10).until(
+            lambda s: s.execute_script("return jQuery.active == 0")
+        )
+
+    def test_vote_up_question(self):
+        """test voting up someone's question"""
+        self.setUpClass()
+        self.driver.get(self.live_server_url + reverse('action:question-detail',
+                                                       kwargs={'pk': self.question.id}))
+        self.driver.find_element_by_id('q_vote_up').click()
+        self.wait_ajax_complete()
+        score = self.driver.find_element_by_id('q_score').text
+        self.assertEqual(score, '1')
+
+    def check_and_accept_alert(self):
+        try:
+            self.driver.switch_to_alert().accept()
+            return True
+        except:
+            return False
+
+    def test_vote_up_own_question(self):
+        """user shouldn't be able to vote his/her questions"""
+        self.driver.get(self.live_server_url + reverse('action:question-detail',
+                                                       kwargs={'pk': self.own_question.id}))
+        self.driver.find_element_by_id('q_vote_up').click()
+        self.assertEqual(True, self.check_and_accept_alert())
+        self.assertEqual(self.driver.find_element_by_id('q_score').text, '0')
+
+
+@skipIf(not getattr(settings, 'SELENIUM_TESTS', False), 'selenium tests are disabled in settings.py')
+class PublicVoteTests(StaticLiveServerTestCase):
+    """Test anonymouse user cannot vote"""
+
+    def setUp(self):
+        self.user = create_sample_user()
+        self.question = create_sample_question(user=self.user)
+        self.driver = webdriver.Chrome('/usr/bin/chromedriver')
+        self.driver.maximize_window()
+
+    def tearDown(self):
+        self.driver.quit()
+        return super().tearDown()
+
+    def check_and_accept_alert(self):
+        try:
+            self.driver.switch_to_alert().accept()
+            return True
+        except:
+            return False
+
+    def test_anonymous_user_vote_up(self):
+        self.driver.get(self.live_server_url +
+                        reverse('action:question-detail', kwargs={'pk': self.question.id}))
+        self.driver.find_element_by_id('q_vote_up').click()
+        self.assertEqual(True, self.check_and_accept_alert())
+        self.assertEqual(self.driver.find_element_by_id('q_score').text, '0')

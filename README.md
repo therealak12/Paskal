@@ -43,3 +43,7 @@ The website is then up and running at <http://localhost:8000>
 cd paskal
 coverage run manage.py test -v 2
 ```
+There are some test that use selenium, if you want to run them:
+first download [appropriate chromedriver](https://chromedriver.chromium.org/downloads) and put in the path ```/usr/bin/chromedirver```.
+
+Then enable the tests by setting ```SELENIUM_TESTS``` to ```True``` in settings.py file and finally run the test with the command above.

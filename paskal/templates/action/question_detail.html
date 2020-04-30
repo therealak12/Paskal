@@ -2,27 +2,11 @@
 {% block js_code %}
 <script>
     $("#q_vote_up").click(function () {
-        {% if question.user != request.user %}
+        {% if question.user != request.user and request.user.is_authenticated %}
             $.ajax({
                 url: "{% url 'action:question-vote' pk=question.id %}",
                 data: {
-                    'vote': '1'
-                },
-                dataType: 'json',
-                success: function (data) {
-                    $("#q_score").text(data.score);
-                }
-            }); 
-        {% else %}
-            alert("شما نمی‌توانید به سوال خودتان رای دهید!");
-        {% endif %}
-    });
-    $("#q_vote_down").click(function () {
-        {% if question.user != request.user %}
-            $.ajax({
-                url: "{% url 'action:question-vote' pk=question.id %}",
-                data: {
-                    'vote': '-1'
+                    "vote": "1"
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -30,13 +14,37 @@
                 }
             });
         {% else %}
-            alert("شما نمی‌توانید به سوال خودتان رای دهید!");
+            {% if request.user.is_authenticated %}
+                alert("شما نمی‌توانید به سوال خودتان رای دهید!");
+            {% else %}
+                alert("برای رای دادن ابتدا وارد شوید.");
+            {% endif %}
+        {% endif %}
+    });
+    $("#q_vote_down").click(function () {
+        {% if question.user != request.user and request.user.is_authenticated %}
+            $.ajax({
+                url: "{% url 'action:question-vote' pk=question.id %}",
+                data: {
+                    "vote": "-1"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#q_score").text(data.score);
+                }
+            });
+        {% else %}
+            {% if request.user.is_authenticated %}
+                alert("شما نمی‌توانید به سوال خودتان رای دهید!");
+            {% else %}
+                alert("برای رای دادن ابتدا وارد شوید.");
+            {% endif %}
         {% endif %}
     });
     $(function () {
         {% for answer in question.answer_set.all %}
         $("#ans_vote_up_{{answer.id}}").click(function () {
-            {% if answer.user != request.user %}
+            {% if answer.user != request.user and request.user.is_authenticated %}
                 $.ajax({
                     url: "{% url 'action:answer-vote' pk=answer.id %}",
                     data: {
@@ -48,11 +56,15 @@
                     }
                 });
             {% else %}
-            alert("شما نمی‌توانید به پاسخ خودتان رای دهید!")
+                {% if request.user.is_authenticated %}
+                    alert("شما نمی‌توانید به پاسخ خودتان رای دهید!");
+                {% else %}
+                    alert("برای رای دادن ابتدا وارد شوید.");
+                {% endif %}
             {% endif %}
         });
         $("#ans_vote_down_{{answer.id}}").click(function () {
-            {% if answer.user != request.user %}
+            {% if answer.user != request.user and request.user.is_authenticated %}
             $.ajax({
                 url: "{% url 'action:answer-vote' pk=answer.id %}",
                 data: {
@@ -64,11 +76,15 @@
                 }
             }); 
             {% else %}
-                alert("شما نمی‌توانید به پاسخ خودتان رای دهید!");
+                {% if request.user.is_authenticated %}
+                    alert("شما نمی‌توانید به پاسخ خودتان رای دهید!");
+                {% else %}
+                    alert("برای رای دادن ابتدا وارد شوید.");
+                {% endif %}
             {% endif %}
         }); 
         {% endfor %}
-    })
+    });
 </script>
 {% endblock %}
 {% load static %}

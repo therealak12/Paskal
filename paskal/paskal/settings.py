@@ -155,3 +155,5 @@ MEDIA_URL = os.path.join(BASE_DIR, 'media/')
 
 # default login path for login_required redirection
 LOGIN_URL = '/users/signin'
+
+SELENIUM_TESTS = False
