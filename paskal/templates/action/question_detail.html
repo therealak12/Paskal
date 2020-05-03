@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load jalali_tags %}
 {% block js_code %}
 <script>
     $("#q_vote_up").click(function () {
@@ -90,77 +91,94 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href={% static 'action/question_detail.css' %}>
 <link rel="stylesheet" type="text/css" href={% static 'common/custom_form.css' %}>
-<div class="container-fluid">
-    <div class="row main_row main_container">
-        <div class="col col-8">
-            <div class="row main_row">
-                <h4 class="q_title rtl_text">{{ question.title }}</h4>
+<link rel="stylesheet" type="text/css" href={% static 'action/question_detail.css' %}>
+<div class="card shadow">
+    <div class="card-header rtl_text">
+        <h4>{{ question.title }}</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col col-1 q_score center_text">
+                <button class="fa fa-plus btn btn-success score_stuff" id="q_vote_up"></button>
+                <div style="font-size: 35px;" id="q_score"><span class="badge badge-info">{{ question.score }}</span></div>
+                <button class="fa fa-minus btn btn-danger score_stuff" id="q_vote_down"></button>
             </div>
-            <div class="row main_row">
-                <div class="col col-1 q_score center_text">
-                    <button class="fa fa-plus btn btn-outline-success score_stuff" id="q_vote_up"></button>
-                    <div class="score_stuff" id="q_score">{{ question.score }}</div>
-                    <button class="fa fa-minus btn btn-outline-danger score_stuff" id="q_vote_down"></button>
-                </div>
-                <div class="rtl_text col col-9"">
-                    {{ question.text }}
-                </div>
+            <div class="col col-11 rtl_text main_text">
+                {{ question.text }}
             </div>
-            <div class=" row main_row">
-                    {% for tag in question.tags.all %}
-                    <a href="#" class="q_tag">{{ tag }}</a>
-                    {% endfor %}
-            </div>
-            {% if question.user == request.user %}
-            <div class="row main_row">
-                <hr>
-                <a class="btn btn-info col col-lg-2 col-md-1"
-                    href="{% url 'action:question-edit' pk=question.id %}">ویرایش</a>
-                &nbsp;
-                {% if can_delete %}
-                <a class="btn btn-danger col col-lg-2 col-md-1"
-                    href="{% url 'action:question-delete' pk=question.id %}">حذف</a>
-                {% endif %}
-            </div>
-            {% endif %}
-            <br><br><br><br>
-            <div class="qa_divider row main_row center_text ans_title">
-                <h3>پاسخ‌ها</h3>
-            </div>
-            {% for answer in question.answer_set.all %}
-            <div class="ans_wrapper">
-                <div class="row inner_row_1">
-                    <div class="col col-1 score_wrapper center_text">
-                        <button class="fa fa-plus btn btn-outline-success score_stuff"
-                            id="ans_vote_up_{{answer.id}}"></button>
-                        <div class="score_stuff" id="ans_score_{{answer.id}}">{{ answer.score }}</div>
-                        <button class="fa fa-minus btn btn-outline-danger score_stuff"
-                            id="ans_vote_down_{{answer.id}}"></button>
-                    </div>
-                    <div class="col col-11">
-                        <p class="rtl_text">{{ answer.text }}</p>
-                    </div>
-                </div>
-                <div class="row inner_row_1 answer_user_section">
-                    <a href="{% url 'user:profile' id=answer.user.id %}">{{ answer.user }}</a>
-                </div>
-            </div>
-            {% endfor %}
-            {% if request.user.is_authenticated %}
-            <div class="row main_row">
-                <form method="POST" dir="rtl" class="col col-12 rtl_text">
-                    {% csrf_token %}
-                    {{ form.text | as_crispy_field }}
-                    <button class="btn btn-success">ثبت پاسخ</button>
-                </form>
-            </div>
-            {% endif %}
         </div>
-        <div class="col col-lg-4 d-none d-md-block sidebar">
-            <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
+        <br>
+        <div class="float-left">
+                {% for tag in question.tags.all %}
+                <a class="badge badge-pill badge-info" href="#" style="font-size: 15px; padding: 10px;">{{ tag }}</a>
+                {% endfor %}
         </div>
     </div>
+    {% if question.user == request.user %}
+    <div class="card-footer">
+        <a class="btn btn-info col col-lg-2 col-md-1"
+            href="{% url 'action:question-edit' pk=question.id %}">ویرایش</a>
+        &nbsp;
+        {% if can_delete %}
+        <a class="btn btn-danger col col-lg-2 col-md-1"
+            href="{% url 'action:question-delete' pk=question.id %}">حذف</a>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
+<br><br><br>
+<div class="shadow-sm bg-light rounded card-header">
+    <h3>پاسخ‌ها</h3>
+</div>
+{% for answer in question.answer_set.all %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="row card-text">
+            <div class="col col-1 score_wrapper center_text">
+                <button class="fa fa-plus btn btn-success score_stuff"
+                    id="ans_vote_up_{{answer.id}}"></button>
+                <div class="score_stuff" id="ans_score_{{answer.id}}">{{ answer.score }}</div>
+                <button class="fa fa-minus btn btn-danger score_stuff"
+                    id="ans_vote_down_{{answer.id}}"></button>
+            </div>
+            <div class="col col-11  main_text">
+                <p class="rtl_text">{{ answer.text }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer float-left answer_footer">
+        <a href="{% url 'user:profile' id=answer.user.id %}" class="font-weight-bold">{{ answer.user }}</a>
+        <span class="text-secondary">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; در تاریخ 
+        </span>
+        <span class="text-secondary">{{answer.created_on|to_jalali:'%d %B %y ساعت  %H:%M'}}</span>
+        <span class="text-secondary">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; آخرین ویرایش در
+        </span>
+        <span class="text-secondary">{{answer.last_updated_on|to_jalali:'%d %B %y ساعت %H:%M'}}</span>
+    </div>
+</div>
+<br>
+{% endfor %}
+<br><br>
+<div class="card shadow-sm">
+    {% if request.user.is_authenticated %}
+        <h3 class="card-header">
+            پاسخ شما
+        </h3>
+        <form method="POST" dir="rtl">
+            <div class="card-body rtl_text">
+                {% csrf_token %}
+                {{ form.text | as_crispy_field }}
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-success">ثبت پاسخ</button>
+            </div>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
+{% block sidebar %}
+<p>پاسکال وبسایتی برای پرسش و پاسخ به زبان فارسی است</p>
 {% endblock %}
