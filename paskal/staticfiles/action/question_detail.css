@@ -1,0 +1,53 @@
+.main_container {
+  direction: rtl;
+}
+
+.q_title {
+  width: 100%;
+  float: right;
+  border-bottom: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: lightgrey;
+  padding-bottom: 10px;
+}
+
+.q_tag {
+  text-decoration: none;
+  color: black;
+  background-color: #cccccc;
+  float: right;
+  margin-left: 10px;
+  margin-top: 5px;
+  border-radius: 4px;
+  padding: 2px 4px;
+  transition: background-color 0.2s;
+  -webkit-transition: background-color 0.2s;
+}
+
+.q_tag:hover {
+  background-color: #eeeeee;
+}
+
+.ans_title {
+  border-bottom: solid 1px lightgrey;
+}
+
+.ans_wrapper {
+  border-bottom: dotted 1px rgb(220, 220, 220);
+}
+
+.qa_divider {
+  padding-top: 10px;
+}
+
+.answer_user_section {
+  direction: ltr;
+}
+
+.score_stuff {
+  font-size: 22px;
+}
+
+.score_wrapper {
+  padding: 0;
+}
