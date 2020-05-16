@@ -30,11 +30,13 @@ class QuestionCreateForm(forms.ModelForm):
 
 class AnswerCreateForm(forms.ModelForm):
     text = forms.CharField(
-        label='پاسخ شما',
+        label='',
         widget=forms.Textarea(
             attrs={
                 'class': 'form-control',
                 'dir': 'rtl',
+                'rows': 15,
+                'style': 'resize: none;'
             }
         )
     )

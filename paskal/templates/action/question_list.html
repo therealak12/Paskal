@@ -1,37 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
+{% block title %}پرسش‌ها{% endblock %}
 <link rel="stylesheet" type="text/css" href={% static 'action/question_list.css' %}>
-<div class="container">
-    <div class="row main_row main_container">
-        <div class="col col-8">
-            {% for question in object_list %}
-            <div class="row main_row q_wrapper">
-                <div class="col col2">
-                    <div class="q_stat" dir="rtl">
-                        {{ question.score }}امتیاز
-                        {{ question.answers | length }}جواب
+{% block content %}
+    {% for question in object_list %}
+    <div class="card shadow-sm">
+        <div class="card-header rtl_text">
+            <h5><a href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a></h5>
+        </div>
+        <div class="card-body">
+            <div class="card-text rtl_text">
+                <div class="row no-gutters">
+                    <div class="col col-lg-2 center_text text-muted">
+                        {{ question.score }} امتیاز
+                        <br>
+                        {{ question.answer_set.count }} جواب
                     </div>
-                </div>
-                <div class="col col-10">
-                    <div class="row inner_row_1">
-                        <div class="q_title">
-                            <h5><a href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a>
-                            </h5>
-                        </div>
-                    </div>
-                    <div class="row inner_row_1">
-                        <div class="q_details">
-                            {{ question.text|truncatechars:100 }}
-                        </div>
+                    <div class="col col-lg-10">
+                        {{ question.text | truncatechars:120 }}
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-        <div class="col col-4 sidebar">
-            <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
         </div>
     </div>
-</div>
+    <br>
+    {% endfor %}
+{% endblock %}
+{% block sidebar %}
+<p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
 {% endblock %}
