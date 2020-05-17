@@ -1,5 +1,7 @@
 body {
-  background-color: #eeeeee;
+  background: url("/static/website_background.jpg");
+  background-repeat: round;
+  background-attachment: fixed;
   padding: 50px;
   font-family: BHoma, sans-serif;
   /* font-family: BKoodakBold; */

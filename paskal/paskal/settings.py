@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'user',
     'action',
     'jalali_date',
+    'mptt',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
