@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '19gs#0t*+lf54cs*=wa@+h)dae!%)z$kg_gju4lwe44at-(6lj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
-                 'paskal.herokuapp.com/', 'shrouded-reaches-96627.herokuapp.com']
+                 'paskal.herokuapp.com', 'shrouded-reaches-96627.herokuapp.com']
 
 
 # Application definition
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'user',
     'action',
     'jalali_date',
+    'mptt',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

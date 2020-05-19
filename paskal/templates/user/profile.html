@@ -37,7 +37,7 @@
                     <h4 class="rtl_text">پاسخ‌ها</h4>
                     {% for answer in user.answer_set.all %}
                     <a class="rtl_text list-group-item list-group-item-action"
-                        href="{% url 'action:question-detail' pk=answer.question.id %}">{{ answer.text | truncatechars:100 }}</a>
+                        href="{% url 'action:question-detail' pk=answer.target_question.id %}">{{ answer.text | truncatechars:100 }}</a>
                     {% empty %}
                         <p>هیچ پاسخی یافت نشد.</p>
                     {% endfor %}

@@ -4,7 +4,7 @@ A powerful full-featured persian Q&A website
 
 ## Demo
 
-You can see a demo [here](https://shrouded-reaches-96627.herokuapp.com/action/questions)
+You can see a demo [here](https://paskal.herokuapp.com/action/questions)
 
 ## Install Prerequisites
 
