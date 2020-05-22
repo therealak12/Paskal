@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user',
     'action',
     'jalali_date',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

@@ -22,7 +22,7 @@
                     </div>
                     <div class="row inner_row_1">
                         <div class="q_details">
-                            {{ question.text|truncatechars:100 }}
+                            {{ question.text|truncatechars:100|safe }}
                         </div>
                     </div>
                 </div>

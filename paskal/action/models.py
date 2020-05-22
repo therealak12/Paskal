@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-
+from ckeditor.fields import RichTextField
 
 class Action(models.Model):
     text = models.TextField()
@@ -29,6 +29,7 @@ class Tag(models.Model):
 
 class Question(Action):
     title = models.CharField(max_length=500)
+    text = RichTextField('متن پرسش', blank=False, null=False)
     tags = models.ManyToManyField('Tag', blank=True)
 
     def __str__(self):
