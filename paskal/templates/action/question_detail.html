@@ -1,14 +1,141 @@
 {% extends 'base.html' %}
+{% load jalali_tags %}
+{% block js_code %}
+{% load mptt_tags %}
+{% load widget_tweaks %}
+<script>
+    $("#q_vote_up").click(function () {
+        {% if question.user != request.user and request.user.is_authenticated %}
+            $.ajax({
+                url: "{% url 'action:question-vote' pk=question.id %}",
+                data: {
+                    "vote": "1"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#q_score").text(data.score);
+                }
+            });
+        {% else %}
+            {% if request.user.is_authenticated %}
+                alert("شما نمی‌توانید به سوال خودتان رای دهید!");
+            {% else %}
+                alert("برای رای دادن ابتدا وارد شوید.");
+            {% endif %}
+        {% endif %}
+    });
+    $("#q_vote_down").click(function () {
+        {% if question.user != request.user and request.user.is_authenticated %}
+            $.ajax({
+                url: "{% url 'action:question-vote' pk=question.id %}",
+                data: {
+                    "vote": "-1"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#q_score").text(data.score);
+                }
+            });
+        {% else %}
+            {% if request.user.is_authenticated %}
+                alert("شما نمی‌توانید به سوال خودتان رای دهید!");
+            {% else %}
+                alert("برای رای دادن ابتدا وارد شوید.");
+            {% endif %}
+        {% endif %}
+    });
+    $(function () {
+        {% for answer in question.answer_set.all %}
+            {% for reply in answer.reply_set.all %}
+                $("#toggle_reply_{{reply.id}}").click(function() {
+                    if ($("#reply_form_{{reply.id}}").is(":visible")) {
+                        $("#toggle_reply_{{reply.id}}").html("افزودن نظر");
+                        $("#reply_form_{{reply.id}}").hide(300);
+                    } else {
+                        $("#toggle_reply_{{reply.id}}").html("لغو");
+                        $("#reply_form_{{reply.id}}").show(300);
+                    }
+                });
+            {% endfor %}
+        $("#ans_vote_up_{{answer.id}}").click(function () {
+            {% if answer.user != request.user and request.user.is_authenticated %}
+                $.ajax({
+                    url: "{% url 'action:answer-vote' pk=answer.id %}",
+                    data: {
+                        'vote': '1'
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#ans_score_{{answer.id}}").text(data.score);
+                    }
+                });
+            {% else %}
+                {% if request.user.is_authenticated %}
+                    alert("شما نمی‌توانید به پاسخ خودتان رای دهید!");
+                {% else %}
+                    alert("برای رای دادن ابتدا وارد شوید.");
+                {% endif %}
+            {% endif %}
+        });
+        $("#ans_vote_down_{{answer.id}}").click(function () {
+            {% if answer.user != request.user and request.user.is_authenticated %}
+            $.ajax({
+                url: "{% url 'action:answer-vote' pk=answer.id %}",
+                data: {
+                    'vote': '-1'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    $("#ans_score_{{answer.id}}").text(data.score);
+                }
+            }); 
+            {% else %}
+                {% if request.user.is_authenticated %}
+                    alert("شما نمی‌توانید به پاسخ خودتان رای دهید!");
+                {% else %}
+                    alert("برای رای دادن ابتدا وارد شوید.");
+                {% endif %}
+            {% endif %}
+        }); 
+        {% endfor %}
+    });
+    {% for reply in question.reply_set.all %}
+        $("#toggle_reply_{{reply.id}}").click(function() {
+            if ($("#reply_form_{{reply.id}}").is(":visible")) {
+                $("#toggle_reply_{{reply.id}}").html("افزودن نظر");
+                $("#reply_form_{{reply.id}}").hide(300);
+            } else {
+                $("#toggle_reply_{{reply.id}}").html("لغو");
+                $("#reply_form_{{reply.id}}").show(300);
+            }
+        });
+        $("#reply_show_children_{{reply.id}}").click(function() {
+            if ($("#reply_children_{{reply.id}}").is(":visible")) {
+                $("#reply_show_children_{{reply.id}}").html("مشاهده پاسخ‌ها");
+                $("#reply_children_{{reply.id}}").hide(300);
+            } else {
+                $("#reply_show_children_{{reply.id}}").html("پنهان‌ کردن");
+                $("#reply_children_{{reply.id}}").show(300);
+            }
+        });
+    {% endfor %}
+</script>
+{% endblock %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href={% static 'action/question_detail.css' %}>
 <link rel="stylesheet" type="text/css" href={% static 'common/custom_form.css' %}>
-<div class="container">
-    <div class="row main_row main_container">
-        <div class="col col-8">
-            <div class="row main_row">
-                <h4 class="q_title rtl_text">{{ question.title }}</h4>
+<link rel="stylesheet" type="text/css" href={% static 'action/question_detail.css' %}>
+<div class="card shadow">
+    <div class="card-header">
+        <h4>{{ question.title }}</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col col-1 q_score center_text">
+                <button class="fa fa-plus btn btn-success score_stuff" id="q_vote_up"></button>
+                <div class="score_stuff" id="q_score">{{ question.score }}</div>
+                <button class="fa fa-minus btn btn-danger score_stuff" id="q_vote_down"></button>
             </div>
             <div class="row main_row">
                 <div class="col col-1 q_score">
@@ -18,50 +145,172 @@
                     {{ question.text | safe}}
                 </div>
             </div>
-            <div class="row main_row">
+        </div>
+        <br>
+        <div class="float-left">
                 {% for tag in question.tags.all %}
-                <a href="#" class="q_tag">{{ tag }}</a>
+                <a class="badge badge-pill badge-info" href="#" style="font-size: 15px; padding: 10px;">{{ tag }}</a>
                 {% endfor %}
+        </div>
+    </div>
+    <div class="card-body bg-light">
+        <div class="row">
+            <div class="col col-12 col-xl-2">
+                <a href="{% url 'user:profile' id=question.user.id %}" class="font-weight-bold">{{ question.user }}</a>
             </div>
-            {% if question.user == request.user %}
-            <div class="row main_row">
-                <hr>
-                <a class="btn btn-info col col-lg-2 col-md-1"
-                    href="{% url 'action:question-edit' pk=question.id %}">ویرایش</a>
-                &nbsp;
-                {% if can_delete %}
-                <a class="btn btn-danger col col-lg-2 col-md-1"
-                    href="{% url 'action:question-delete' pk=question.id %}">حذف</a>
+            <div class="col col-12 col-xl-3 center_text">
+                <p class="text-secondary">
+                    در تاریخ 
+                {{question.created_on|to_jalali:'%d %B %y ساعت  %H:%M'}}
+                </p>
+            </div>
+            <div class="col col-12 col-xl-4 center_text">
+                <p class="text-secondary">
+                    آخرین ویرایش در
+                {{question.last_updated_on|to_jalali:'%d %B %y ساعت %H:%M'}}
+                </p>
+            </div>
+            <div class="col col-12 col-xl-3">
+                {% if question.user == request.user %}
+                    <a class="btn btn-info"
+                        href="{% url 'action:question-edit' pk=question.id %}">ویرایش</a>
+                    &nbsp;
+                    <a class="btn btn-danger"
+                        href="{% url 'action:question-delete' pk=question.id %}">حذف</a>
                 {% endif %}
             </div>
-            {% endif %}
-            <br><br><br><br>
-            <div class="qa_divider row main_row center_text ans_title">
-                <h3>پاسخ‌ها</h3>
-            </div>
-            {% for answer in question.answer_set.all %}
-            <div class="ans_wrapper">
-                <div class="row inner_row_1">
-                    <p class="rtl_text">{{ answer.text }}</p>
-                </div>
-                <div class="row inner_row_1 answer_user_section">
-                    <a href="{% url 'user:profile' id=answer.user.id %}">{{ answer.user }}</a>
-                </div>
-            </div>
-            {% endfor %}
-            {% if request.user.is_authenticated %}
-            <div class="row main_row">
-                <form method="POST" dir="rtl" class="col col-12 rtl_text">
-                    {% csrf_token %}
-                    {{ form.text | as_crispy_field }}
-                    <button class="btn btn-success">ثبت پاسخ</button>
-                </form>
-            </div>
-            {% endif %}
         </div>
-        <div class="col col-lg-4 d-none d-md-block sidebar">
-            <p>پاسکال وبسایتی برای <br> پرسش و پاسخ به زبان <br> فارسی است</p>
+    </div>
+    <br><br>
+    <div class="card-body">
+        {% if question.reply_set.all %}
+            <ul>
+                {% recursetree question.reply_set.all %}
+                    <li>
+                        <div class="row">
+                            <div class="col col-12 col-xl-7">
+                                <div class="rtl_text">
+                                    <a href="{% url 'user:profile' id=node.user.id %}">{{node.user}}</a>:&nbsp;{{ node.text }}
+                                </div>
+                            </div>
+                            <div class="col col-12 col-xl-5">
+                                {% if not node.is_leaf_node %}
+                                    <button class="btn btn-secondary" id="reply_show_children_{{node.id}}">مشاهده پاسخ‌ها</button>
+                                {% endif %}
+                                &nbsp;&nbsp;&nbsp;
+                                {% if request.user.is_authenticated %}
+                                    <button class="btn btn-warning" id="toggle_reply_{{node.id}}">افزودن نظر</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-12">
+                                {% if request.user.is_authenticated %}
+                                <form id="reply_form_{{node.id}}" method="POST" dir="rtl" style="display: none;">
+                                    <div class="card-body">
+                                        {% csrf_token %}
+                                        {{ reply_form.text | attr:"rows:1" | as_crispy_field }}
+                                        <input type="hidden" name="parent_reply_id" value="{{node.id}}">
+                                        <button name="reply" class="btn btn-success">ثبت نظر</button>
+                                    </div>
+                                </form>
+                            {% endif %}
+                            </div>
+                        </div>
+                        <hr>
+                        {% if not node.is_leaf_node %}
+                            <ul class="children" id="reply_children_{{node.id}}" style="display: none;">
+                                {{ children }}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endrecursetree %}
+            </ul>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+            <form method="POST" dir="rtl">
+                <div class="card-body">
+                    {% csrf_token %}
+                    {{ reply_form.text | attr:"rows:1" | as_crispy_field }}
+                    <button name="reply" class="btn btn-success">ثبت نظر</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+</div>
+<br><br><br>
+<div class="shadow-sm bg-light rounded card-header">
+    <h3>پاسخ‌ها</h3>
+</div>
+{% for answer in question.answer_set.all %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="row card-text">
+            <div class="col col-1 score_wrapper center_text">
+                <button class="fa fa-plus btn btn-success score_stuff"
+                    id="ans_vote_up_{{answer.id}}"></button>
+                <div class="score_stuff" id="ans_score_{{answer.id}}">{{ answer.score }}</div>
+                <button class="fa fa-minus btn btn-danger score_stuff"
+                    id="ans_vote_down_{{answer.id}}"></button>
+            </div>
+            <div class="col col-11  main_text">
+                <p class="rtl_text">{{ answer.text }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-body bg-light">
+        <div class="row">
+            <div class="col col-12 col-lg-2">
+                <a href="{% url 'user:profile' id=answer.user.id %}" class="font-weight-bold">{{ answer.user }}</a>
+            </div>
+            <div class="col col-12 col-lg-3 center_text">
+                <p class="text-secondary">
+                    در تاریخ 
+                {{answer.created_on|to_jalali:'%d %B %y ساعت  %H:%M'}}
+                </p>
+            </div>
+            <div class="col col-12 col-lg-4 center_text">
+                <p class="text-secondary">
+                    آخرین ویرایش در
+                {{answer.last_updated_on|to_jalali:'%d %B %y ساعت %H:%M'}}
+                </p>
+            </div>
+            {% comment %} <div class="col col-12 col-lg-3">
+                {% if answer.user == request.user %}
+                    <a class="btn btn-info"
+                        href="{% url 'action:answer-edit' pk=answer.id %}">ویرایش</a>
+                    &nbsp;
+                    <a class="btn btn-danger"
+                        href="{% url 'action:answer-delete' pk=answer.id %}">حذف</a>
+                {% endif %}
+            </div> {% endcomment %}
         </div>
     </div>
 </div>
+<br>
+{% endfor %}
+<br><br>
+<div class="card shadow-sm">
+    <h3 class="card-header">
+        پاسخ شما
+    </h3>
+    {% if request.user.is_authenticated %}
+        <form method="POST" dir="rtl">
+            <div class="card-body rtl_text">
+                {% csrf_token %}
+                {{ answer_form.text | as_crispy_field }}
+            </div>
+            <div class="card-footer">
+                <button name="answer" class="btn btn-success">ثبت پاسخ</button>
+            </div>
+        </form>
+    {% else %}
+        <div class="card-body">
+        برای پاسخ دادن ابتدا وارد شوید.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% block sidebar %}
+<p>پاسکال وبسایتی برای پرسش و پاسخ به زبان فارسی است</p>
 {% endblock %}

@@ -3,42 +3,52 @@
 {% load jalali_tags %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href={% static 'user/profile.css' %}>
-<div class="container">
-    <div class="row main_row main_container">
-        <div class="col col-8">
-            <div class="row main_row">
-                <strong>
-                    پروفایل {{ user.name }}
-                </strong>
-            </div>
-            <div class="row main_row">
-                <img class="user_image" src="{{ user.avatar.url }}" alt="user_profile_image">
+<div class="card shadow">
+<div class="card-header">
+    <h4>{{ user.name }}</h4>
+</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col col-4">
+                <img class="user_image rounded" src="{{ user.avatar.url }}" alt="user_profile_image">
                 <div class="info_wrapper">
                     <p>زمان عضویت: {{ user.date_joined|to_jalali:'%d %B %y' }}</p>
                     <p>امتیاز: {{ user.score }}</p>
                 </div>
-            </div>
-            <br>
-            <div class="row main_row">
+
+                <br>
                 {% if user.bio %}
                 {{user.bio}}
                 {% endif %}
             </div>
-            <br><br>
-            <div class="row main_row">
+
+            <div class="col col-8">
                 <ul class="list-group list-group-flush">
                     <h4 class="rtl_text">پرسش‌ها</h4>
                     {% for question in user.question_set.all %}
                     <a class="rtl_text list-group-item list-group-item-action"
                         href="{% url 'action:question-detail' pk=question.id %}">{{ question.title }}</a>
+                    {% empty %}
+                        <p>هیچ پرسشی یافت نشد.</p>
                     {% endfor %}
                 </ul>
+                <br><br>
+                <ul class="list-group list-group-flush">
+                    <h4 class="rtl_text">پاسخ‌ها</h4>
+                    {% for answer in user.answer_set.all %}
+                    <a class="rtl_text list-group-item list-group-item-action"
+                        href="{% url 'action:question-detail' pk=answer.target_question.id %}">{{ answer.text | truncatechars:100 }}</a>
+                    {% empty %}
+                        <p>هیچ پاسخی یافت نشد.</p>
+                    {% endfor %}
+                </ul>
+                <br>
             </div>
-        </div>
-        <div class="col col-4 sidebar">
-            برای دریافت امتیاز به سوالات جواب بدهید<br>
-            یا سوالات خود را بپرسید :)
         </div>
     </div>
 </div>
+{% endblock %}
+{% block sidebar %}
+<p>            برای دریافت امتیاز به سوالات جواب بدهید<br>
+            یا سوالات خود را بپرسید :)</p>
 {% endblock %}

@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath=paskal/ paskal.wsgi:application --log-file=-

@@ -1,10 +1,12 @@
+import os
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import get_user_model
 
 from .forms import UserCreationForm, AuthenticationForm, EditProfile
 from django.contrib.auth.forms import PasswordChangeForm
-from .models import User
 
 
 def signup(request):
@@ -45,15 +47,14 @@ def signout(request):
     return redirect('action:question-list')
 
 
-@login_required(login_url='/users/signin')
 def profile(request, id):
-    user = User.objects.get(id=id)
+    user = get_user_model().objects.get(id=id)
     return render(request, 'user/profile.html', {'user': user})
 
 
 @login_required(login_url='/users/signin')
 def user_activity(request, id):
-    user = User.objects.get(id=id)
+    user = get_user_model().objects.get(id=id)
     return render(request, 'user/user-activity.html', {'user': user})
 
 
@@ -63,11 +64,16 @@ def user_edit(request):
         form = EditProfile(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            user = User.objects.get(id=request.user.id)
-            return render(request, 'user/profile.html', {'user': user})
-    else:
-        form = EditProfile(instance=request.user)
-        return render(request, 'user/user-edit.html', {'form': form})
+            if request.FILES.get('avatar', None) != None:
+                try:
+                    os.remove(request.user.avatar.url)
+                except Exception as e:
+                    print('Exception in removing old profile image: ', e)
+                request.user.avatar = request.FILES['avatar']
+                request.user.save()
+            return redirect('user:profile', id=request.user.id)
+    form = EditProfile(instance=request.user)
+    return render(request, 'user/user-edit.html', {'form': form})
 
 
 @login_required(login_url='/users/signin')
@@ -76,8 +82,6 @@ def changepass(request):
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            user = User.objects.get(id=request.user.id)
-            return render(request, 'user/profile.html', {'user': user})
-    else:
-        form = PasswordChangeForm(user=request.user)
+            return redirect('user:profile', id=request.user.id)
+    form = PasswordChangeForm(user=request.user)
     return render(request, 'user/change-pass.html', {'form': form})

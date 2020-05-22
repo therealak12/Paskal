@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import locale
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,8 @@ SECRET_KEY = '19gs#0t*+lf54cs*=wa@+h)dae!%)z$kg_gju4lwe44at-(6lj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1',
+                 'paskal.herokuapp.com', 'shrouded-reaches-96627.herokuapp.com']
 
 
 # Application definition
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     'action',
     'jalali_date',
     'ckeditor',
+    'mptt',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'paskal.urls'
@@ -76,11 +81,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'paskal.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
+DATABASES = {}
+if DEBUG:
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'paskal',
         'USER': 'paskal_user',
@@ -88,7 +91,8 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '',
     }
-}
+else:
+    DATABASES['default'] = dj_database_url.config()
 
 
 # Password validation
@@ -127,7 +131,7 @@ AUTH_USER_MODEL = 'user.User'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LANGUAGE_CODE = 'fa'
-locale.setlocale(locale.LC_ALL, locale='fa_IR.UTF8')
+# locale.setlocale(locale.LC_ALL, locale='fa_IR.UTF8')
 
 JALALI_DATE_DEFAULTS = {
     'Strftime': {
@@ -146,13 +150,18 @@ JALALI_DATE_DEFAULTS = {
     },
 }
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = ('/static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-MEDIA_ROOT = 'static/media/'
+MEDIA_ROOT = 'media/'
 MEDIA_URL = os.path.join(BASE_DIR, 'media/')
 
 # default login path for login_required redirection
 LOGIN_URL = '/users/signin'
+
+SELENIUM_TESTS = False
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
