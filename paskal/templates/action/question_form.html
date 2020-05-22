@@ -7,7 +7,16 @@
     <form action="{% url 'action:question-create' %}" method="POST" dir="rtl" class="rtl_text">
         {% csrf_token %}
         <div class="main_row">
-            {{form | crispy}}
+            <div class="question_create_title">
+                {{form.title | as_crispy_field}}
+            </div>
+            <div class="question_create_text">
+                {{form.text |   as_crispy_field | safe}}
+                {{form.media}}
+            </div>
+            <div class="question_create_tags">
+                {{form.tags | as_crispy_field}}
+            </div>
         </div>
         <button class="btn btn-success">ثبت تغییرات</button>
     </form>
