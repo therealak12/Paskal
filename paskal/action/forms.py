@@ -13,15 +13,8 @@ class QuestionCreateForm(forms.ModelForm):
             }
         )
     )
-    text = forms.CharField(
-        label='متن پرسش',
-        widget=forms.Textarea(
-            attrs={
-                'class': 'form-control',
-                'dir': 'rtl',
-            }
-        )
-    )
+
+    text = forms.TextInput()
 
     class Meta:
         model = Question

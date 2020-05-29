@@ -16,8 +16,10 @@
                         <br>
                         {{ question.answer_set.count }} جواب
                     </div>
-                    <div class="col col-lg-10">
-                        {{ question.text | truncatechars:120 }}
+                    <div class="row inner_row_1">
+                        <div class="q_details">
+                            {{ question.text|truncatechars:100|safe }}
+                        </div>
                     </div>
                 </div>
             </div>

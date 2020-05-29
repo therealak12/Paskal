@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '19gs#0t*+lf54cs*=wa@+h)dae!%)z$kg_gju4lwe44at-(6lj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['localhost', '127.0.0.1',
                  'paskal.herokuapp.com', 'shrouded-reaches-96627.herokuapp.com']
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'user',
     'action',
     'jalali_date',
+    'ckeditor',
     'mptt',
     'widget_tweaks',
 ]
@@ -163,4 +164,4 @@ LOGIN_URL = '/users/signin'
 
 SELENIUM_TESTS = False
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

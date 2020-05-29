@@ -137,8 +137,8 @@
                 <div class="score_stuff" id="q_score">{{ question.score }}</div>
                 <button class="fa fa-minus btn btn-danger score_stuff" id="q_vote_down"></button>
             </div>
-            <div class="col col-11 rtl_text main_text">
-                {{ question.text }}
+            <div class="col col-11 main_text rtl_text ">
+                {{ question.text | safe }}
             </div>
         </div>
         <br>
@@ -249,7 +249,9 @@
                     id="ans_vote_down_{{answer.id}}"></button>
             </div>
             <div class="col col-11  main_text">
-                <p class="rtl_text">{{ answer.text }}</p>
+                <p class="rtl_text">
+                    {{ answer.text }}
+                </p>
             </div>
         </div>
     </div>
