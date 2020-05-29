@@ -95,11 +95,11 @@ html {
 }
 
 .navbar {
-  background-color: #5c8f22;
+  background-color: #11aa55;
 }
 
 .navbar-collapse {
-  background-color: #5c8f22;
+  background-color: #11aa55;
 }
 
 .navbar-toggler-icon:hover,
@@ -152,8 +152,8 @@ html {
 }
 
 .navbar .navbar-nav .dropdown-menu {
-  background-color: #5c8f22;
-  border-color: #5c8f22;
+  background-color: #11aa55;
+  border-color: #11aa55;
 }
 
 .navbar .navbar-nav .dropdown-menu .dropdown-item {
@@ -164,11 +164,11 @@ html {
 .navbar .navbar-nav .dropdown-menu .dropdown-item:focus,
 .navbar .navbar-nav .dropdown-menu .dropdown-item.active {
   color: #ffffff;
-  background-color: #5c8f22;
+  background-color: #11aa55;
 }
 
 .navbar .navbar-nav .dropdown-menu .dropdown-divider {
-  border-top-color: #5c8f22;
+  border-top-color: #11aa55;
 }
 
 .navbar .navbar-nav .nav-item.active .nav-link:hover,
@@ -180,12 +180,12 @@ html {
 }
 
 .navbar .navbar-toggle {
-  border-color: #5c8f22;
+  border-color: #11aa55;
 }
 
 .navbar .navbar-toggle:hover,
 .navbar .navbar-toggle:focus {
-  background-color: #5c8f22;
+  background-color: #11aa55;
 }
 
 .navbar .navbar-toggle .navbar-toggler-icon {
@@ -217,7 +217,7 @@ html {
 
   .navbar-expand-sm .navbar-nav .show .dropdown-menu .dropdown-item.active {
     color: #ffffff;
-    background-color: #5c8f22;
+    background-color: #11aa55;
   }
 }
 
@@ -233,7 +233,7 @@ html {
 
   .navbar-expand-md .navbar-nav .show .dropdown-menu .dropdown-item.active {
     color: #ffffff;
-    background-color: #5c8f22;
+    background-color: #11aa55;
   }
 }
 
@@ -249,7 +249,7 @@ html {
 
   .navbar-expand-lg .navbar-nav .show .dropdown-menu .dropdown-item.active {
     color: #ffffff;
-    background-color: #5c8f22;
+    background-color: #11aa55;
   }
 }
 
@@ -265,7 +265,7 @@ html {
 
   .navbar-expand-xl .navbar-nav .show .dropdown-menu .dropdown-item.active {
     color: #ffffff;
-    background-color: #5c8f22;
+    background-color: #11aa55;
   }
 }
 
@@ -280,5 +280,5 @@ html {
 
 .navbar-expand .navbar-nav .show .dropdown-menu .dropdown-item.active {
   color: #ffffff;
-  background-color: #5c8f22;
+  background-color: #11aa55;
 }
