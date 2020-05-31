@@ -165,3 +165,10 @@ LOGIN_URL = '/users/signin'
 SELENIUM_TESTS = False
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Required for ckeditor responsiveness
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': 'auto',
+    },
+}
