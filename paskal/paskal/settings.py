@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'mptt',
     'widget_tweaks',
+    'taggit'
 ]
 
 MIDDLEWARE = [
@@ -164,4 +165,10 @@ LOGIN_URL = '/users/signin'
 
 SELENIUM_TESTS = False
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': 'auto',
+    },
+}

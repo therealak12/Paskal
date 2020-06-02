@@ -16,3 +16,4 @@ if settings.DEBUG:
 
 
 handler403 = 'paskal.views.permission_denied'
+handler404 = 'paskal.views.not_found'

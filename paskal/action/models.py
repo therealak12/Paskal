@@ -1,8 +1,11 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+
 from ckeditor.fields import RichTextField
 from mptt.models import MPTTModel, TreeForeignKey
+from taggit.managers import TaggableManager
+
 
 class Action(models.Model):
     score = models.IntegerField(default=0)
@@ -10,19 +13,12 @@ class Action(models.Model):
     last_updated_on = models.DateTimeField(default=timezone.now)
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
-
 class Question(Action):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=500)
     text = RichTextField('متن پرسش', blank=False, null=False)
-    tags = models.ManyToManyField('Tag', blank=True)
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         return self.title
@@ -33,7 +29,7 @@ class Answer(Action):
                              on_delete=models.DO_NOTHING)
     text = models.CharField(max_length=1000)
     target_question = models.ForeignKey(
-        Question , on_delete=models.CASCADE, null=True)
+        Question, on_delete=models.CASCADE, null=True)
 
 
 class Reply(MPTTModel):
