@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block title %}پرسش‌ها{% endblock %}
+{% load static %}
 <link rel="stylesheet" type="text/css" href={% static 'action/question_list.css' %}>
 {% block content %}
     {% for question in object_list %}

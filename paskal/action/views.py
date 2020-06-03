@@ -8,12 +8,23 @@ from django.utils import timezone
 
 from .models import Question, Answer, Reply
 from .forms import QuestionCreateForm, AnswerCreateForm, ReplyCreateForm
+from taggit.models import Tag
 
 
 class QuestionListView(ListView):
     paginate_by = 30
     model = Question
     ordering = ['-created_on']
+
+    def get(self, request, *args, **kwargs):
+        tag_slug = request.GET.get('tag')
+        if tag_slug:
+            try:
+                tag = Tag.objects.get(slug=tag_slug)
+                self.queryset = Question.objects.filter(tags=tag)
+            except Exception:
+                raise Http404()
+        return super().get(request, *args, **kwargs)
 
 
 class QuestionDetailView(DetailView):
@@ -74,6 +85,7 @@ class QuestionCreateView(CreateView):
         obj = form.save(commit=False)
         obj.user = self.request.user
         obj.save()
+        form.save_m2m()
         return redirect('action:question-list')
 
 
@@ -82,6 +94,7 @@ class QuestionUpdateView(UpdateView):
         if self.request.user != self.get_object().user:
             raise PermissionDenied
         return super().get(request, *args, **kwargs)
+
     model = Question
     form_class = QuestionCreateForm
     template_name_suffix = '_update_form'
@@ -89,8 +102,8 @@ class QuestionUpdateView(UpdateView):
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.updated_on = timezone.now()
-        obj.tags.set(form.cleaned_data['tags'])
         obj.save()
+        form.save_m2m()
         return redirect('action:question-list')
 
 

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% block title %}{{question.title}}{% endblock %}
 {% load jalali_tags %}
 {% block js_code %}
 {% load mptt_tags %}
@@ -139,13 +140,12 @@
             </div>
             <div class="col col-11 main_text rtl_text ">
                 {{ question.text | safe }}
+                <div>
+                    {% for tag in question.tags.all %}
+                    <a class="badge badge-secondary badge-pill tag_badge" href="{% url 'action:question-list' %}?tag={{tag}}">{{ tag }}</a>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <br>
-        <div class="float-left">
-                {% for tag in question.tags.all %}
-                <a class="badge badge-pill badge-info" href="#" style="font-size: 15px; padding: 10px;">{{ tag }}</a>
-                {% endfor %}
         </div>
     </div>
     <div class="card-body bg-light">
@@ -176,7 +176,6 @@
             </div>
         </div>
     </div>
-    <br><br>
     <div class="card-body">
         {% if question.reply_set.all %}
             <ul>
