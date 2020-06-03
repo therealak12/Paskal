@@ -45,6 +45,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     bio = models.CharField(max_length=160, blank=True)
     avatar = models.ImageField(upload_to=get_avatar_path, blank=True, default='images/user/default.png')
     score = models.IntegerField(default=0)
+    upvotes = models.ManyToManyField('action.Action', related_name='upvoters')
+    downvotes = models.ManyToManyField('action.Action', related_name='downvoters')
 
     objects = UserManager()
 

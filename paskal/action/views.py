@@ -122,11 +122,29 @@ class QuestionDeleteView(DeleteView):
 def vote_question(request, pk):
     question = Question.objects.get(pk=pk)
     vote = int(request.GET.get('vote', '0'))
-    question.score += vote
-    if vote == 1:
+    was_upvoter = question.upvoters.filter(id=request.user.id)
+    was_downvoter = question.downvoters.filter(id=request.user.id)
+    if was_upvoter:
+        print("was upvoter")
+        question.user.score -= 10
+        request.user.upvotes.remove(question)
+        question.score -= 1
+    if was_downvoter:
+        print("was downvoter")
+        question.user.score += 2
+        request.user.downvotes.remove(question)
+        question.score += 1
+    if vote == 1 and not was_upvoter:
+        print("vote up")
         question.user.score += 10
-    elif vote == -1:
+        request.user.upvotes.add(question)
+        question.score += vote
+    elif vote == -1 and not was_downvoter:
+        print("vote down")
         question.user.score -= 2
+        request.user.downvotes.add(question)
+        question.score += vote
+    request.user.save()
     question.user.save()
     question.save()
     response = JsonResponse({
@@ -139,11 +157,29 @@ def vote_question(request, pk):
 def vote_answer(request, pk):
     answer = Answer.objects.get(pk=pk)
     vote = int(request.GET.get('vote', '0'))
-    answer.score += vote
-    if vote == 1:
+    was_upvoter = answer.upvoters.filter(id=request.user.id)
+    was_downvoter = answer.downvoters.filter(id=request.user.id)
+    if was_upvoter:
+        print("was upvoter")
+        answer.user.score -= 10
+        request.user.upvotes.remove(answer)
+        answer.score -= 1
+    if was_downvoter:
+        print("was downvoter")
+        answer.user.score += 2
+        request.user.downvotes.remove(answer)
+        answer.score += 1
+    if vote == 1 and not was_upvoter:
+        print("vote up")
         answer.user.score += 10
-    elif vote == -1:
+        request.user.upvotes.add(answer)
+        answer.score += vote
+    elif vote == -1 and not was_downvoter:
+        print("vote down")
         answer.user.score -= 2
+        request.user.downvotes.add(answer)
+        answer.score += vote
+    request.user.save()
     answer.user.save()
     answer.save()
     response = JsonResponse({

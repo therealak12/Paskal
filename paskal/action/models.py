@@ -6,7 +6,6 @@ from ckeditor.fields import RichTextField
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
 
-
 class Action(models.Model):
     score = models.IntegerField(default=0)
     created_on = models.DateTimeField(default=timezone.now)
@@ -29,7 +28,7 @@ class Answer(Action):
                              on_delete=models.DO_NOTHING)
     text = models.CharField(max_length=1000)
     target_question = models.ForeignKey(
-        Question, on_delete=models.CASCADE, null=True)
+        Question , on_delete=models.CASCADE, null=True)
 
 
 class Reply(MPTTModel):
