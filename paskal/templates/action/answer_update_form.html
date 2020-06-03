@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}ویرایش پاسخ{% endblock %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={% static 'common/custom_form.css' %}>
+<div class="container">
+    <form method="POST" action="{% url 'action:answer-edit' pk=answer.id %}" dir="rtl">
+        <div class="card-body rtl_text">
+            {% csrf_token %}
+            {{ form.text | as_crispy_field }}
+        </div>
+        <div class="card-footer">
+            <button name="answer" class="btn btn-success">ثبت تغییرات</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

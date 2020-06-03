@@ -271,7 +271,7 @@
                 {{answer.last_updated_on|to_jalali:'%d %B %y ساعت %H:%M'}}
                 </p>
             </div>
-            {% comment %} <div class="col col-12 col-lg-3">
+            <div class="col col-12 col-lg-3">
                 {% if answer.user == request.user %}
                     <a class="btn btn-info"
                         href="{% url 'action:answer-edit' pk=answer.id %}">ویرایش</a>
@@ -279,7 +279,7 @@
                     <a class="btn btn-danger"
                         href="{% url 'action:answer-delete' pk=answer.id %}">حذف</a>
                 {% endif %}
-            </div> {% endcomment %}
+            </div>
         </div>
     </div>
 </div>
