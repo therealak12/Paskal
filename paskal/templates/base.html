@@ -49,19 +49,19 @@
                     <img src="{% get_media_prefix %}images/p_logo.png" style="max-width:60px;">پاسکال
                 </a>
                 <ul class="navbar-nav ml-auto rtl_text rtl_dir">
-                    {% if user.is_authenticated %}
+                    {% if request.user.is_authenticated %}
                     <li class="nav-item active">
                         <a class="nav-link"
-                            href="{% url 'user:profile' id=user.id %}">
-                            {% if user.name %}
-                            {{ user.name }}
+                            href="{% url 'user:profile' id=request.user.id %}">
+                            {% if request.user.name %}
+                            {{ request.user.name }}
                             {% else %}
-                            {{ user.email }}
+                            {{ request.user.email }}
                             {% endif %}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" dir="rtl"> {{ user.score }} امتیاز</a>
+                        <a class="nav-link" dir="rtl"> {{ request.user.score }} امتیاز</a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'user:signout' %}">خروج</a>
